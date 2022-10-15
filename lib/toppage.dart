@@ -11,12 +11,33 @@ class TopPage extends StatefulWidget {
 }
 
 class _TopPageState extends State<TopPage> {
-  String getTomorrowDate() {
-    initializeDateFormatting('ja');
-    var now = DateTime.now();
-    var tomorrowDateTime = now.add(Duration(days: 1));
-    return DateFormat.yMMMMEEEEd('ja').format(tomorrowDateTime).toString();
+  String getTime(dateTime) {
+    return DateFormat.Hm().format(dateTime).toString();
   }
+
+  // 支度時間は編集画面で設定できるようにする
+  static int preparationTime = 60;
+
+  // 移動時間はgoogle mapのapiから持ってくる
+  static int travelTime = 15;
+
+  // 予定はバックから受け取る
+  Map<String, String> schedule = {
+    'title': 'パーソナリティ心理学',
+    'place': '名古屋大学教育学部',
+  };
+
+  // 最初の予定の時間をバックから受け取る
+  static DateTime scheduleTime = DateTime(2022, 10, 16, 8, 45);
+
+  static DateTime departureTime =
+      scheduleTime.subtract(Duration(minutes: travelTime));
+
+  static DateTime wakeUpDateTime =
+      departureTime.subtract(Duration(minutes: preparationTime));
+
+  static String wakeUpDate =
+      DateFormat.yMMMMEEEEd('ja').format(wakeUpDateTime).toString();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +46,25 @@ class _TopPageState extends State<TopPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(getTomorrowDate()),
+          Container(
+              color: Colors.amber[100],
+              child: Column(children: [
+                Text(wakeUpDate),
+                Text(getTime(wakeUpDateTime), style: TextStyle(fontSize: 48)),
+                Text('起床'),
+              ])),
+          Text('支度 ' + preparationTime.toString() + 'min'),
+          Text(getTime(departureTime) + ' 出発'),
+          Text('移動 ' + travelTime.toString() + 'min'),
+          Container(
+              color: Colors.green,
+              child: Column(
+                children: [
+                  Text(getTime(scheduleTime), style: TextStyle(fontSize: 24)),
+                  Text(schedule['title'].toString()),
+                  Text(schedule['place'].toString()),
+                ],
+              )),
           TextButton(
             child: Text('ログイン画面に戻る'),
             onPressed: () {
