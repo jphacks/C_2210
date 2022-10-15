@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'main.dart';
 import 'edit.dart';
 import 'setting.dart';
@@ -9,6 +11,13 @@ class TopPage extends StatefulWidget {
 }
 
 class _TopPageState extends State<TopPage> {
+  String getTomorrowDate() {
+    initializeDateFormatting('ja');
+    var now = DateTime.now();
+    var tomorrowDateTime = now.add(Duration(days: 1));
+    return DateFormat.yMMMMEEEEd('ja').format(tomorrowDateTime).toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +25,7 @@ class _TopPageState extends State<TopPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('トップページです'),
+          Text(getTomorrowDate()),
           TextButton(
             child: Text('ログイン画面に戻る'),
             onPressed: () {
