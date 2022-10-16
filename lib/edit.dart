@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 
 class EditPage extends StatefulWidget {
+  EditPage(this.preparationTime);
+  int preparationTime;
+
   @override
   _EditPageState createState() => _EditPageState();
 }
@@ -14,7 +17,7 @@ class _EditPageState extends State<EditPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('編集ページです'),
+          Text('編集ページ'),
           TextButton(
             child: Text('トップに戻る'),
             onPressed: () {

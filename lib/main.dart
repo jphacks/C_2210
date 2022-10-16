@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'toppage.dart';
 import 'login.dart';
 
+final preparationTimeProvider = StateProvider((ref) {
+  return 50;
+});
+
+final travelTimeProvider = StateProvider((ref) {
+  return 30;
+});
+
 void main() {
-  runApp(const MyApp());
+  runApp(ProviderScope(
+    child: MaterialApp(
+      title: 'timer',
+      home: MyApp(),
+    ),
+  ));
   initializeDateFormatting('ja');
 }
 

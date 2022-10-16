@@ -1,46 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'main.dart';
 import 'edit.dart';
 import 'setting.dart';
 
-class TopPage extends StatefulWidget {
+class TopPage extends ConsumerWidget {
   @override
-  _TopPageState createState() => _TopPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    String getTime(dateTime) {
+      return DateFormat.Hm().format(dateTime).toString();
+    }
 
-class _TopPageState extends State<TopPage> {
-  String getTime(dateTime) {
-    return DateFormat.Hm().format(dateTime).toString();
-  }
+    // 予定はバックから受け取る
+    Map<String, String> schedule = {
+      'title': 'パーソナリティ心理学',
+      'place': '名古屋大学教育学部',
+    };
 
-  // 支度時間は編集画面で設定できるようにする
-  static int preparationTime = 60;
+    // 最初の予定の時間をバックから受け取る
+    final DateTime scheduleTime = DateTime(2022, 10, 16, 8, 45);
 
-  // 移動時間はgoogle mapのapiから持ってくる
-  static int travelTime = 15;
+    final preparationTime = ref.watch(preparationTimeProvider);
+    final travelTime = ref.watch(travelTimeProvider);
+    // 出発時間などを計算、フォーマット
+    final DateTime departureTime =
+        scheduleTime.subtract(Duration(minutes: travelTime));
+    final DateTime wakeUpDateTime =
+        departureTime.subtract(Duration(minutes: preparationTime));
+    final String wakeUpDate =
+        DateFormat.yMMMMEEEEd('ja').format(wakeUpDateTime).toString();
 
-  // 予定はバックから受け取る
-  Map<String, String> schedule = {
-    'title': 'パーソナリティ心理学',
-    'place': '名古屋大学教育学部',
-  };
-
-  // 最初の予定の時間をバックから受け取る
-  static DateTime scheduleTime = DateTime(2022, 10, 16, 8, 45);
-
-  static DateTime departureTime =
-      scheduleTime.subtract(Duration(minutes: travelTime));
-
-  static DateTime wakeUpDateTime =
-      departureTime.subtract(Duration(minutes: preparationTime));
-
-  static String wakeUpDate =
-      DateFormat.yMMMMEEEEd('ja').format(wakeUpDateTime).toString();
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
       child: Column(
@@ -73,9 +64,11 @@ class _TopPageState extends State<TopPage> {
           ),
           TextButton(
             child: Text('編集ページへ'),
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => EditPage()));
+            onPressed: () async {
+              final editedTravelTime = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditPage(preparationTime)));
             },
           ),
           TextButton(
