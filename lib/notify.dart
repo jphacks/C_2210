@@ -18,15 +18,15 @@ class Notify {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> _cancelNotification(int month, int day) async {
+  Future<void> _cancelNotification(DateTime time) async {
     //IDを指定して通知をキャンセル
-    await flutterLocalNotificationsPlugin.cancel(month * 100 + day);
-    await flutterLocalNotificationsPlugin.cancel(month * 100 + day + 10000);
+    await flutterLocalNotificationsPlugin.cancel(time.month * 100 + time.day);
+    await flutterLocalNotificationsPlugin
+        .cancel(time.month * 100 + time.day + 10000);
   }
 
   /// ローカル通知をスケジュールする
-  Future<void> _alarm(int year, int month, int day, int hour, int minutes,
-      int sound, bool vibration) async {
+  Future<void> _alarm(DateTime time, int sound, bool vibration) async {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     // 初期化
     flutterLocalNotificationsPlugin.initialize(
@@ -36,7 +36,7 @@ class Notify {
           iOS: DarwinInitializationSettings()),
     );
     // アラームを設定する
-    int id = month * 100 + day;
+    int id = time.month * 100 + time.day;
     await flutterLocalNotificationsPlugin.zonedSchedule(
         androidAllowWhileIdle: true,
         id, // id
@@ -44,11 +44,11 @@ class Notify {
         '朝ですよ $id', // body
         tz.TZDateTime(
           tz.local,
-          year,
-          month,
-          day,
-          hour,
-          minutes,
+          time.year,
+          time.month,
+          time.day,
+          time.hour,
+          time.minute,
         ),
         NotificationDetails(
           android: AndroidNotificationDetails(
@@ -73,9 +73,9 @@ class Notify {
     // 前日の通知を設定する
     tz.TZDateTime notification_time = tz.TZDateTime(
       tz.local,
-      year,
-      month,
-      day,
+      time.year,
+      time.month,
+      time.day,
       20,
       0,
     );
@@ -85,7 +85,7 @@ class Notify {
       await flutterLocalNotificationsPlugin.zonedSchedule(
           androidAllowWhileIdle: true,
           id + 10000, // id
-          '明日は$hour時$minutes分に起きよう！', // title
+          '明日は${time.hour}時${time.minute}分に起きよう！', // title
           '$id', // body
           notification_time,
           NotificationDetails(
@@ -122,13 +122,13 @@ class NotificationSamplePage extends StatelessWidget {
             child: Row(children: [
       FloatingActionButton(
         onPressed: () {
-          notify._alarm(2022, 10, 16, 19, 47, 1, true);
+          notify._alarm(DateTime.now().add(Duration(minutes: 1)), 1, true);
         }, // ボタンを押したら通知をスケジュールする
         child: Text("${now.day}"),
       ),
       FloatingActionButton(
         onPressed: () {
-          notify._cancelNotification(10, 16);
+          notify._cancelNotification(DateTime.now());
         }, // ボタンを押したら通知をスケジュールする
         child: Text("cancel"),
       ),
