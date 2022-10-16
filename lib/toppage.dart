@@ -27,10 +27,10 @@ class TopPage extends ConsumerWidget {
     final travelTime = ref.watch(travelTimeProvider);
     final travelDateTime = DateTime(0, 0, 0, 0, travelTime);
     // 出発時間などを計算、フォーマット
-    final DateTime departureTime = scheduleTime.subtract(Duration(
-        hours: preparationDateTime.hour, minutes: preparationDateTime.minute));
-    final DateTime wakeUpDateTime = departureTime.subtract(
+    final DateTime departureTime = scheduleTime.subtract(
         Duration(hours: travelDateTime.hour, minutes: travelDateTime.minute));
+    final DateTime wakeUpDateTime = departureTime.subtract(Duration(
+        hours: preparationDateTime.hour, minutes: preparationDateTime.minute));
     final String wakeUpDate =
         DateFormat.yMMMMEEEEd('ja').format(wakeUpDateTime).toString();
 
