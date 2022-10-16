@@ -23,12 +23,14 @@ class TopPage extends ConsumerWidget {
     final DateTime scheduleTime = DateTime(2022, 10, 16, 8, 45);
 
     final preparationTime = ref.watch(preparationTimeProvider);
+    final preparationDateTime = DateTime(0, 0, 0, 0, preparationTime);
     final travelTime = ref.watch(travelTimeProvider);
+    final travelDateTime = DateTime(0, 0, 0, 0, travelTime);
     // 出発時間などを計算、フォーマット
-    final DateTime departureTime =
-        scheduleTime.subtract(Duration(minutes: travelTime));
-    final DateTime wakeUpDateTime =
-        departureTime.subtract(Duration(minutes: preparationTime));
+    final DateTime departureTime = scheduleTime.subtract(Duration(
+        hours: preparationDateTime.hour, minutes: preparationDateTime.minute));
+    final DateTime wakeUpDateTime = departureTime.subtract(
+        Duration(hours: travelDateTime.hour, minutes: travelDateTime.minute));
     final String wakeUpDate =
         DateFormat.yMMMMEEEEd('ja').format(wakeUpDateTime).toString();
 
@@ -44,9 +46,9 @@ class TopPage extends ConsumerWidget {
                 Text(getTime(wakeUpDateTime), style: TextStyle(fontSize: 48)),
                 Text('起床'),
               ])),
-          Text('支度 ' + preparationTime.toString() + 'min'),
+          Text('支度 ' + getTime(preparationDateTime)),
           Text(getTime(departureTime) + ' 出発'),
-          Text('移動 ' + travelTime.toString() + 'min'),
+          Text('移動 ' + getTime(travelDateTime)),
           Container(
               color: Colors.green,
               child: Column(
@@ -66,9 +68,7 @@ class TopPage extends ConsumerWidget {
             child: Text('編集ページへ'),
             onPressed: () async {
               final editedTravelTime = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => EditPage(preparationTime)));
+                  context, MaterialPageRoute(builder: (context) => EditPage()));
             },
           ),
           TextButton(

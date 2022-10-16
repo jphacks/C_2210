@@ -7,7 +7,7 @@ import 'toppage.dart';
 import 'login.dart';
 
 final preparationTimeProvider = StateProvider((ref) {
-  return 50;
+  return 90;
 });
 
 final travelTimeProvider = StateProvider((ref) {
