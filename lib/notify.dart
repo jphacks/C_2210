@@ -52,14 +52,20 @@ class Notify {
         ),
         NotificationDetails(
           android: AndroidNotificationDetails(
-            'qawsedrftgyhujikolp',
+            'qazwsxedcfrfvtgbyhnujmikolp',
             'my_channel_name',
             channelDescription: 'my_channel_description',
             importance: Importance.max,
             priority: Priority.high,
-            autoCancel: false,
             playSound: true,
+            sound: RawResourceAndroidNotificationSound('sound1'),
+            enableVibration: true,
           ),
+          iOS: DarwinNotificationDetails(
+              threadIdentifier: 'signal',
+              presentSound: true,
+              presentAlert: true,
+              presentBadge: true),
         ),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
@@ -90,6 +96,13 @@ class Notify {
               importance: Importance.low,
               priority: Priority.low,
               playSound: false,
+              enableVibration: false,
+            ),
+            iOS: DarwinNotificationDetails(
+              threadIdentifier: 'Notification',
+              presentSound: false,
+              presentAlert: false,
+              presentBadge: false,
             ),
           ),
           uiLocalNotificationDateInterpretation:
@@ -109,7 +122,7 @@ class NotificationSamplePage extends StatelessWidget {
             child: Row(children: [
       FloatingActionButton(
         onPressed: () {
-          notify._alarm(2022, 10, 16, 16, 12);
+          notify._alarm(2022, 10, 16, 17, 50);
         }, // ボタンを押したら通知をスケジュールする
         child: Text("${now.day}"),
       ),
