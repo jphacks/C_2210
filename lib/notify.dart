@@ -122,9 +122,15 @@ class NotificationSamplePage extends StatelessWidget {
             child: Row(children: [
       FloatingActionButton(
         onPressed: () {
-          notify._alarm(2022, 10, 16, 17, 50, 1, true);
+          notify._alarm(2022, 10, 16, 19, 47, 1, true);
         }, // ボタンを押したら通知をスケジュールする
         child: Text("${now.day}"),
+      ),
+      FloatingActionButton(
+        onPressed: () {
+          notify._cancelNotification(10, 16);
+        }, // ボタンを押したら通知をスケジュールする
+        child: Text("cancel"),
       ),
     ])));
   }
