@@ -25,8 +25,8 @@ class Notify {
   }
 
   /// ローカル通知をスケジュールする
-  Future<void> _alarm(
-      int year, int month, int day, int hour, int minutes) async {
+  Future<void> _alarm(int year, int month, int day, int hour, int minutes,
+      int sound, bool vibration) async {
     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     // 初期化
     flutterLocalNotificationsPlugin.initialize(
@@ -58,8 +58,8 @@ class Notify {
             importance: Importance.max,
             priority: Priority.high,
             playSound: true,
-            sound: RawResourceAndroidNotificationSound('sound1'),
-            enableVibration: true,
+            sound: RawResourceAndroidNotificationSound('sound${sound}'),
+            enableVibration: vibration,
           ),
           iOS: DarwinNotificationDetails(
               threadIdentifier: 'signal',
@@ -122,7 +122,7 @@ class NotificationSamplePage extends StatelessWidget {
             child: Row(children: [
       FloatingActionButton(
         onPressed: () {
-          notify._alarm(2022, 10, 16, 17, 50);
+          notify._alarm(2022, 10, 16, 17, 50, 1, true);
         }, // ボタンを押したら通知をスケジュールする
         child: Text("${now.day}"),
       ),
