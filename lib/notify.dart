@@ -37,7 +37,7 @@ class Notify {
     );
     // アラームを設定する
     int id = month * 100 + day;
-    flutterLocalNotificationsPlugin.zonedSchedule(
+    await flutterLocalNotificationsPlugin.zonedSchedule(
         androidAllowWhileIdle: true,
         id, // id
         'アラーム', // title
@@ -52,13 +52,18 @@ class Notify {
         ),
         NotificationDetails(
           android: AndroidNotificationDetails(
-              'my_channel_id', 'my_channel_name',
-              channelDescription: 'my_channel_description',
-              importance: Importance.max,
-              priority: Priority.high),
+            'qawsedrftgyhujikolp',
+            'my_channel_name',
+            channelDescription: 'my_channel_description',
+            importance: Importance.max,
+            priority: Priority.high,
+            autoCancel: false,
+            playSound: true,
+          ),
         ),
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime);
+
     // 前日の通知を設定する
     tz.TZDateTime notification_time = tz.TZDateTime(
       tz.local,
@@ -71,7 +76,7 @@ class Notify {
 
     notification_time = notification_time.add(const Duration(days: -1));
     if (now.isBefore(notification_time)) {
-      flutterLocalNotificationsPlugin.zonedSchedule(
+      await flutterLocalNotificationsPlugin.zonedSchedule(
           androidAllowWhileIdle: true,
           id + 10000, // id
           '明日は$hour時$minutes分に起きよう！', // title
@@ -79,10 +84,13 @@ class Notify {
           notification_time,
           NotificationDetails(
             android: AndroidNotificationDetails(
-                'my_channel_id', 'my_channel_name',
-                channelDescription: 'my_channel_description',
-                importance: Importance.low,
-                priority: Priority.low),
+              'my_channel_id',
+              'my_channel_name',
+              channelDescription: 'my_channel_description',
+              importance: Importance.low,
+              priority: Priority.low,
+              playSound: false,
+            ),
           ),
           uiLocalNotificationDateInterpretation:
               UILocalNotificationDateInterpretation.absoluteTime);
@@ -91,6 +99,7 @@ class Notify {
 }
 
 class NotificationSamplePage extends StatelessWidget {
+  Notify notify = Notify();
   final tz.TZDateTime now =
       tz.TZDateTime.now(tz.local).add(const Duration(days: -20));
   @override
@@ -100,8 +109,7 @@ class NotificationSamplePage extends StatelessWidget {
             child: Row(children: [
       FloatingActionButton(
         onPressed: () {
-          Notify notify = Notify();
-          notify._alarm(2022, 10, 16, 13, 20);
+          notify._alarm(2022, 10, 16, 16, 12);
         }, // ボタンを押したら通知をスケジュールする
         child: Text("${now.day}"),
       ),
