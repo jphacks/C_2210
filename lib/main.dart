@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'toppage.dart';
 import 'login.dart';
+import 'notify.dart';
 
 final preparationTimeProvider = StateProvider((ref) {
   return 90;
@@ -14,7 +15,8 @@ final travelTimeProvider = StateProvider((ref) {
   return 30;
 });
 
-void main() {
+void main() async {
+  await setup();
   runApp(ProviderScope(
     child: MaterialApp(
       title: 'timer',
