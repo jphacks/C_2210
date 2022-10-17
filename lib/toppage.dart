@@ -43,7 +43,8 @@ class TopPage extends ConsumerWidget {
             style: TextStyle(color: Colors.black),
           ),
           iconTheme: const IconThemeData(color: Color(0xFF000000)),
-          backgroundColor: Color(0xFFFFFFFF),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
           actions: [
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
