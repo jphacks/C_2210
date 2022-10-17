@@ -42,8 +42,27 @@ class TopPage extends ConsumerWidget {
           Container(
               color: Colors.amber[100],
               child: Column(children: [
-                Text(wakeUpDate),
-                Text(getTime(wakeUpDateTime), style: TextStyle(fontSize: 48)),
+                Container(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(wakeUpDate),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFFF9900),
+                      ),
+                      icon: Icon(Icons.create),
+                      label: Text('編集'),
+                      onPressed: () async {
+                        final editedTravelTime = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditPage()));
+                      },
+                    ),
+                  ],
+                )),
+                Text(getTime(wakeUpDateTime), style: TextStyle(fontSize: 64)),
                 Text('起床'),
               ])),
           Text('支度 ' + getTime(preparationDateTime)),
@@ -62,13 +81,6 @@ class TopPage extends ConsumerWidget {
             child: Text('ログイン画面に戻る'),
             onPressed: () {
               Navigator.pop(context);
-            },
-          ),
-          TextButton(
-            child: Text('編集ページへ'),
-            onPressed: () async {
-              final editedTravelTime = await Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => EditPage()));
             },
           ),
           TextButton(
