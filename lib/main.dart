@@ -1,13 +1,36 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'toppage.dart';
+import 'login.dart';
 import 'notify.dart';
+
+final preparationTimeProvider = StateProvider((ref) {
+  return 90;
+});
+
+final travelTimeProvider = StateProvider((ref) {
+  return 30;
+});
 
 void main() async {
   await setup();
-  runApp(MaterialApp(home: NotificationSamplePage()));
+  runApp(ProviderScope(
+    child: MaterialApp(
+      title: 'timer',
+      home: MyApp(),
+    ),
+  ));
+  initializeDateFormatting('ja');
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(title: 'Welcome to Flutter', home: LoginPage());
+  }
 }
