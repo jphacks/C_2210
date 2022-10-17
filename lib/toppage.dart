@@ -10,13 +10,11 @@ import 'setting.dart';
 class TopPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 予定はバックから受け取る
+    // 予定もproviderで管理できるようにする
     Map<String, String> schedule = {
       'title': 'パーソナリティ心理学',
       'place': '名古屋大学教育学部',
     };
-
-    // 最初の予定の時間をバックから受け取る
     final DateTime scheduleTime = DateTime(2022, 10, 16, 8, 45);
 
     // providerから値を受け取る
@@ -38,6 +36,7 @@ class TopPage extends ConsumerWidget {
 
     return Scaffold(
         // header部分
+        // Todo: 背景を透過させる
         appBar: AppBar(
           title: Text(
             wakeUpDate,
