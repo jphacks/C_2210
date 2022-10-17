@@ -7,6 +7,16 @@ import 'package:timezone/timezone.dart' as tz;
 
 import 'main.dart';
 
+/*
+仕様書
+Notify hoge = Notify();のようにしてインスタンス作成
+notify._alarm(DateTime(アラーム日時), int(アラーム音現状1~5まで), bool(バイブレーションの有無));
+で目覚まし&前日の通知をセット
+notify._cancelNotification(DateTime(キャンセルする日付));
+で目覚まし&前日の通知をキャンセル
+時間やアラーム音を変更するだけなら上の関数を実行すれば上書きされる
+ */
+//日本標準時に設定
 Future<void> setup() async {
   tz.initializeTimeZones();
   var tokyo = tz.getLocation('Asia/Tokyo');
@@ -49,21 +59,23 @@ class Notify {
           time.day,
           time.hour,
           time.minute,
-        ),
+        ), //通知時間
+        //通知の詳細を指定
         NotificationDetails(
           android: AndroidNotificationDetails(
-            'qazwsxedcfrfvtgbyhnujmikolp',
+            'sound${sound},vibration${vibration}',
             'my_channel_name',
             channelDescription: 'my_channel_description',
             importance: Importance.max,
             priority: Priority.high,
-            playSound: true,
-            sound: RawResourceAndroidNotificationSound('sound${sound}'),
-            enableVibration: vibration,
+            playSound: true, //音の有無
+            sound: RawResourceAndroidNotificationSound('sound${sound}'), //音の指定
+            enableVibration: vibration, //バイブレーションの設定
           ),
           iOS: DarwinNotificationDetails(
               threadIdentifier: 'signal',
-              presentSound: true,
+              //sound:'sound1',
+              presentSound: true, //音の有無
               presentAlert: true,
               presentBadge: true),
         ),
@@ -129,7 +141,7 @@ class NotificationSamplePage extends StatelessWidget {
       FloatingActionButton(
         onPressed: () {
           notify._cancelNotification(DateTime.now());
-        }, // ボタンを押したら通知をスケジュールする
+        }, // ボタンを押したら通知を削除
         child: Text("cancel"),
       ),
     ])));
