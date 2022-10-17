@@ -4,15 +4,12 @@ import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'main.dart';
 import 'edit.dart';
+import 'login.dart';
 import 'setting.dart';
 
 class TopPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    String getTime(dateTime) {
-      return DateFormat.Hm().format(dateTime).toString();
-    }
-
     // 予定はバックから受け取る
     Map<String, String> schedule = {
       'title': 'パーソナリティ心理学',
@@ -22,76 +19,98 @@ class TopPage extends ConsumerWidget {
     // 最初の予定の時間をバックから受け取る
     final DateTime scheduleTime = DateTime(2022, 10, 16, 8, 45);
 
+    // providerから値を受け取る
     final preparationTime = ref.watch(preparationTimeProvider);
     final preparationDateTime = DateTime(0, 0, 0, 0, preparationTime);
     final travelTime = ref.watch(travelTimeProvider);
     final travelDateTime = DateTime(0, 0, 0, 0, travelTime);
-    // 出発時間などを計算、フォーマット
+    // 出発時間などを計算
     final DateTime departureTime = scheduleTime.subtract(
         Duration(hours: travelDateTime.hour, minutes: travelDateTime.minute));
     final DateTime wakeUpDateTime = departureTime.subtract(Duration(
         hours: preparationDateTime.hour, minutes: preparationDateTime.minute));
+    // DateTimeを型変換する
     final String wakeUpDate =
-        DateFormat.yMMMMEEEEd('ja').format(wakeUpDateTime).toString();
+        DateFormat.MMMEd('ja').format(wakeUpDateTime).toString();
+    String getTime(dateTime) {
+      return DateFormat.Hm().format(dateTime).toString();
+    }
 
     return Scaffold(
-        body: Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-              color: Colors.amber[100],
-              child: Column(children: [
-                Container(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(wakeUpDate),
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFFF9900),
-                      ),
-                      icon: Icon(Icons.create),
-                      label: Text('編集'),
-                      onPressed: () async {
-                        final editedTravelTime = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditPage()));
-                      },
-                    ),
-                  ],
-                )),
-                Text(getTime(wakeUpDateTime), style: TextStyle(fontSize: 64)),
-                Text('起床'),
-              ])),
-          Text('支度 ' + getTime(preparationDateTime)),
-          Text(getTime(departureTime) + ' 出発'),
-          Text('移動 ' + getTime(travelDateTime)),
-          Container(
-              color: Colors.green,
-              child: Column(
-                children: [
-                  Text(getTime(scheduleTime), style: TextStyle(fontSize: 24)),
-                  Text(schedule['title'].toString()),
-                  Text(schedule['place'].toString()),
-                ],
-              )),
-          TextButton(
-            child: Text('ログイン画面に戻る'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+        // header部分
+        appBar: AppBar(
+          title: Text(
+            wakeUpDate,
+            style: TextStyle(color: Colors.black),
           ),
-          TextButton(
-            child: Text('設定画面へ'),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SettingPage()));
-            },
-          )
-        ],
-      ),
-    ));
+          iconTheme: const IconThemeData(color: Color(0xFF000000)),
+          backgroundColor: Color(0xFFFFFFFF),
+          actions: [
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFFF9900),
+              ),
+              icon: Icon(Icons.create),
+              label: Text('編集'),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EditPage()));
+              },
+            ),
+          ],
+        ),
+        drawer: Drawer(
+            child: ListView(
+          children: [
+            DrawerHeader(child: Text('alarm')),
+            ListTile(
+              leading: TextButton(
+                child: Text('設定画面'),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SettingPage()));
+                },
+              ),
+            ),
+            ListTile(
+              leading: TextButton(
+                child: Text('ログアウト'),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
+              ),
+            )
+          ],
+        )),
+        // メイン部分
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                  color: Colors.amber[100],
+                  child: Column(children: [
+                    Text(getTime(wakeUpDateTime),
+                        style: TextStyle(fontSize: 64)),
+                    Text('起床'),
+                  ])),
+              Text('支度 ' + getTime(preparationDateTime)),
+              Text(getTime(departureTime) + ' 出発'),
+              Text('移動 ' + getTime(travelDateTime)),
+              // google chalenderから取ってきた予定を表示。ListTile使ったほうがいいかも
+              Container(
+                  color: Colors.green,
+                  child: Column(
+                    children: [
+                      Text(getTime(scheduleTime),
+                          style: TextStyle(fontSize: 24)),
+                      Text(schedule['title'].toString()),
+                      Text(schedule['place'].toString()),
+                    ],
+                  )),
+            ],
+          ),
+        ));
   }
 }
