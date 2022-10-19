@@ -29,6 +29,12 @@ class EditPage extends ConsumerWidget {
         hours: preparationDateTime.hour, minutes: preparationDateTime.minute));
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('アラームを編集', style: TextStyle(color: Colors.black),),
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+      ),
         body: Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -95,12 +101,6 @@ class EditPage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [Text('到着'), Text(getTime(scheduleTime))],
             ),
-          ),
-          TextButton(
-            child: Text('トップに戻る'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
           ),
         ],
       ),
