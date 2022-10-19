@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-/* import 'package:google_place/google_place.dart';
-import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart'; */
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'main.dart';
 
 class SettingPage extends StatefulWidget {
@@ -21,10 +18,14 @@ class _SettingPageState extends State<SettingPage> {
   var prepar_minutes = 0;
   var move_hour = 0;
   var move_minutes = 0;
-  final DateTime travelDateTime = DateTime(0, 0, 0, 0, 0);
+  DateTime notifyDateTime = DateTime(0, 0, 0, 0, 0);
 
   @override
   Widget build(BuildContext context) {
+    String getTime(dateTime) {
+      return DateFormat.Hm().format(dateTime).toString();
+    }
+
     return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -84,13 +85,14 @@ class _SettingPageState extends State<SettingPage> {
               child: Column(
                 children: [
                   Container(
+                    padding: EdgeInsets.only(bottom: 12),
                     child: Column(
                       children: [
                         Text('デフォルトの支度時間'),
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 30, vertical: 10),
-                          margin: EdgeInsets.symmetric(vertical: 1),
+                          margin: EdgeInsets.symmetric(vertical: 3),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -149,13 +151,14 @@ class _SettingPageState extends State<SettingPage> {
                     ),
                   ),
                   Container(
+                    padding: EdgeInsets.symmetric(vertical: 12),
                     child: Column(
                       children: [
                         Text('デフォルトの移動時間'),
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 30, vertical: 10),
-                          margin: EdgeInsets.symmetric(vertical: 1),
+                          margin: EdgeInsets.symmetric(vertical: 3),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -216,11 +219,13 @@ class _SettingPageState extends State<SettingPage> {
                     ),
                   ),
                   Container(
+                    padding: EdgeInsets.only(top: 12, bottom: 24),
                     child: Column(
                       children: [
                         Text('通知', textAlign: TextAlign.left),
                         Container(
                           padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.symmetric(vertical: 3),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
@@ -255,6 +260,30 @@ class _SettingPageState extends State<SettingPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text("タイミング"),
+                                  Container(
+                                    padding: EdgeInsets.only(right: 12),
+                                    child: InkWell(
+                                        child: Text(getTime(notifyDateTime)),
+                                        onTap: () async {
+                                          Picker(
+                                            adapter: DateTimePickerAdapter(
+                                                type: PickerDateTimeType.kHM,
+                                                value: notifyDateTime),
+                                            title: Text('通知時間を編集'),
+                                            onConfirm:
+                                                (Picker picker, List value) {
+                                              setState(() => {
+                                                    notifyDateTime = DateTime(
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        value[0],
+                                                        value[1])
+                                                  });
+                                            },
+                                          ).showModal(context);
+                                        }),
+                                  )
                                 ],
                               )
                             ],
