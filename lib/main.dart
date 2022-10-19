@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'toppage.dart';
 import 'login.dart';
 import 'notify.dart';
@@ -31,6 +33,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Welcome to Flutter', home: LoginPage());
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: LoginPage(),
+    );
   }
 }
