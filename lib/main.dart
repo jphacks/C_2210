@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +15,15 @@ final preparationTimeProvider = StateProvider((ref) {
 final travelTimeProvider = StateProvider((ref) {
   return 30;
 });
+
+final selectedMusicProvider  = StateProvider((ref) {
+  return 'ベテルギウス';
+});
+
+final isSnoozeOnProvider = StateProvider((ref) {
+  return false;
+});
+
 
 void main() async {
   await setup();

@@ -4,6 +4,7 @@ import 'main.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:flutter/cupertino.dart';
 
 class EditPage extends ConsumerWidget {
   @override
@@ -13,8 +14,11 @@ class EditPage extends ConsumerWidget {
 
     // providerから値を受け取る
     final int preparationTime = ref.watch(preparationTimeProvider);
-    final DateTime preparationDateTime = DateTime(0, 0, 0, 0, preparationTime);
     final int travelTime = ref.watch(travelTimeProvider);
+    final String selectedMusic = ref.watch(selectedMusicProvider);
+    final bool isSnoozeOn = ref.watch(isSnoozeOnProvider);
+
+    final DateTime preparationDateTime = DateTime(0, 0, 0, 0, preparationTime);
     final DateTime travelDateTime = DateTime(0, 0, 0, 0, travelTime);
 
     // DateTime型を変換
@@ -100,6 +104,42 @@ class EditPage extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [Text('到着'), Text(getTime(scheduleTime))],
+            ),
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('アラーム音'),
+                TextButton(
+                  child: Text(selectedMusic + ' >'),
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Container();
+                      }
+                    );
+                  },
+                )
+              ],
+            ),
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('スヌーズ'),
+                CupertinoSwitch(
+                  value: isSnoozeOn,
+                  onChanged: (value) {
+                    ref.read(isSnoozeOnProvider.notifier).update((state) {
+                      state = value;
+                      return state;
+                    });
+                  },
+                )
+              ],
             ),
           ),
         ],
