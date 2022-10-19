@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart'; */
+import 'package:flutter_picker/flutter_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'main.dart';
 
 class SettingPage extends StatefulWidget {
@@ -14,6 +16,13 @@ class _SettingPageState extends State<SettingPage> {
   List<Map> PlaceList = [];
   var NewPlaceName = '';
   var NewPlaceTime = 0;
+  var pushnotification = true;
+  var prepar_hour = 0;
+  var prepar_minutes = 0;
+  var move_hour = 0;
+  var move_minutes = 0;
+  final DateTime travelDateTime = DateTime(0, 0, 0, 0, 0);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -78,6 +87,64 @@ class _SettingPageState extends State<SettingPage> {
                     child: Column(
                       children: [
                         Text('デフォルトの支度時間'),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          margin: EdgeInsets.symmetric(vertical: 1),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: InkWell(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: 40,
+                                    child: Text(prepar_hour.toString(),
+                                        style: TextStyle(
+                                          color: Color(0xffff9900),
+                                          fontSize: 32,
+                                        )),
+                                  ),
+                                  Text('h',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      )),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: 40,
+                                    child: Text(prepar_minutes.toString(),
+                                        style: TextStyle(
+                                          color: Color(0xffff9900),
+                                          fontSize: 32,
+                                        )),
+                                  ),
+                                  Text('m',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      )),
+                                ],
+                              ),
+                              onTap: () async {
+                                Picker(
+                                  adapter: DateTimePickerAdapter(
+                                      type: PickerDateTimeType.kHM,
+                                      value: DateTime(0, 0, 0, prepar_hour,
+                                          prepar_minutes)),
+                                  title: Text('移動時間を編集'),
+                                  onConfirm: (Picker picker, List value) {
+                                    setState(() => {
+                                          prepar_hour = value[0],
+                                          prepar_minutes = value[1]
+                                        });
+                                  },
+                                ).showModal(context);
+                              }),
+                        )
                       ],
                     ),
                   ),
@@ -85,13 +152,116 @@ class _SettingPageState extends State<SettingPage> {
                     child: Column(
                       children: [
                         Text('デフォルトの移動時間'),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          margin: EdgeInsets.symmetric(vertical: 1),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: InkWell(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: 40,
+                                    child: Text(move_hour.toString(),
+                                        style: TextStyle(
+                                          color: Color(0xffff9900),
+                                          fontSize: 32,
+                                        )),
+                                  ),
+                                  Text('h',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      )),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: 40,
+                                    child: Text(move_minutes.toString(),
+                                        style: TextStyle(
+                                          color: Color(0xffff9900),
+                                          fontSize: 32,
+                                        )),
+                                  ),
+                                  Text('m',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      )),
+                                ],
+                              ),
+                              onTap: () async {
+                                Picker(
+                                  adapter: DateTimePickerAdapter(
+                                      type: PickerDateTimeType.kHM,
+                                      value: DateTime(
+                                          0, 0, 0, move_hour, move_minutes)),
+                                  title: Text('支度時間を編集'),
+                                  onConfirm: (Picker picker, List value) {
+                                    setState(() => {
+                                          move_hour = value[0],
+                                          move_minutes = value[1]
+                                        });
+                                  },
+                                ).showModal(context);
+                              }),
+                        ),
+                        Text('場所が指定されていない場合、デフォルトの移動時間でアラームがセットされます',
+                            style: TextStyle(fontSize: 8)),
                       ],
                     ),
                   ),
                   Container(
                     child: Column(
                       children: [
-                        Text('通知'),
+                        Text('通知', textAlign: TextAlign.left),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("プッシュ通知"),
+                                  Transform.scale(
+                                    scale: 0.8,
+                                    child: CupertinoSwitch(
+                                      activeColor: Color(0xffff9900),
+                                      value: pushnotification,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          pushnotification = value;
+                                        });
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Divider(
+                                color: Colors.grey,
+                                thickness: 1,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("タイミング"),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Text('指定した時間に、翌日のアラーム時刻、出発時刻、目的地、到着時刻、目的地の場所を通知します',
+                            style: TextStyle(fontSize: 8)),
                       ],
                     ),
                   ),
@@ -103,7 +273,21 @@ class _SettingPageState extends State<SettingPage> {
                           child: ListView.builder(
                             itemCount: PlaceList.length,
                             itemBuilder: (context, index) {
-                              return Text('a');
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
+                                margin: EdgeInsets.symmetric(vertical: 1),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text("大学"),
+                                    Text('a'),
+                                  ],
+                                ),
+                              );
                             },
                           ),
                         ),
@@ -144,90 +328,3 @@ class _SettingPageState extends State<SettingPage> {
         ));
   }
 }
-
-/* class _SettingPageState extends State<SettingPage> {
-  late GooglePlace googlePlace;
-  List<AutocompletePrediction> predictions = [];
-  List<Map> placeList = [];
-  var place = '';
-
-  @override
-  void initState() {
-    googlePlace = GooglePlace(
-        'AIzaSyBnKnBwKdnq1D2FtAZSn2dZnyd9nxe00qY'); // ⬅︎GoogleMapと同じAPIキーを指定。
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-              width: MediaQuery.of(context).size.width * 0.8,
-              alignment: Alignment.centerLeft,
-              child: TextFormField(
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    autoCompleteSearch(value); // 入力される毎に引数にその入力文字を渡し、関数を実行
-                  } else {
-                    if (predictions.length > 0 && mounted) {
-                      // ここで配列を初期化。初期化しないと文字が入力されるたびに検索結果が蓄積されてしまう。
-                      setState(() {
-                        predictions = [];
-                      });
-                    }
-                  }
-                },
-                decoration: InputDecoration(
-                  hintText: '場所を検索',
-                  hintStyle:
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  border: InputBorder.none,
-                ),
-              )),
-          Flexible(
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: predictions.length, // 検索結果を格納したpredictions配列の長さを指定
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(predictions[index]
-                        .description
-                        .toString()), // 検索結果を表示。descriptionを指定すると場所名が表示されます。
-                    onTap: () async {
-                      setState(() {
-                        place = predictions[index].description.toString();
-                      });
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-          Text('${place}'),
-          Text('設定ページです'),
-          TextButton(
-            child: Text('トップに戻る'),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-    ));
-  }
-
-  void autoCompleteSearch(String value) async {
-    final result = await googlePlace.autocomplete.get(value, language: 'ja');
-    if (result != null && result.predictions != null && mounted) {
-      setState(() {
-        predictions = result.predictions!;
-      });
-    }
-  }
-}
- */
