@@ -37,10 +37,19 @@ class EditPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('アラームを編集', style: TextStyle(color: Colors.black),),
+        centerTitle: true,
+        title: Text('アラームを編集', style: TextStyle(fontSize: 16, color: Colors.black),),
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        leadingWidth: 100,
+        leading: TextButton(
+          child: Text('キャンセル', style: TextStyle(fontSize: 16, color: Color(0xFFFF9900))),
+          onPressed: () {Navigator.pop(context);}),
+        actions: [TextButton(
+          child: Text('保存', style: TextStyle(fontSize: 16, color: Color(0xFFFF9900))),
+          onPressed: () {Navigator.pop(context);}
+        )],
       ),
         body: Center(
       child: Column(
@@ -51,7 +60,9 @@ class EditPage extends ConsumerWidget {
             width: MediaQuery.of(context).size.width * 0.6,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text('起床', style: TextStyle(fontSize: 24),), Text(getTime(wakeUpDateTime), style: TextStyle(fontSize: 32))],
+              children: [
+                Text('起床', style: TextStyle(fontSize: 24),),
+                Text(getTime(wakeUpDateTime), style: TextStyle(fontSize: 32))],
             ),
           ),
           Container(
@@ -63,7 +74,17 @@ class EditPage extends ConsumerWidget {
             children: [
               Text('支度', style: TextStyle(fontSize: 20)),
               TextButton(
-                child: Text(getTime(preparationDateTime), style: TextStyle(fontSize: 32)),
+                child: Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(preparationDateTime.hour.toString(), style: TextStyle(fontSize: 32, color: Color(0xFFFF9900))),
+                            Text('h', style: TextStyle(fontSize: 24, color: Color(0xFF000000))),
+                            SizedBox(width: 20,),
+                            Text(preparationDateTime.minute.toString(), style: TextStyle(fontSize: 32, color: Color(0xFFFF9900))),
+                            Text('m', style: TextStyle(fontSize: 24, color: Color(0xFF000000)))
+                          ]),
+                      ),
                 onPressed: () async {
                   Picker(
                       adapter: DateTimePickerAdapter(
@@ -97,7 +118,17 @@ class EditPage extends ConsumerWidget {
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text('移動', style: TextStyle(fontSize: 20)),
               TextButton(
-                child: Text(getTime(travelDateTime), style: TextStyle(fontSize: 32)),
+                child: Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(travelDateTime.hour.toString(), style: TextStyle(fontSize: 32, color: Color(0xFFFF9900))),
+                            Text('h', style: TextStyle(fontSize: 24, color: Color(0xFF000000))),
+                            SizedBox(width: 20,),
+                            Text(travelDateTime.minute.toString(), style: TextStyle(fontSize: 32, color: Color(0xFFFF9900))),
+                            Text('m', style: TextStyle(fontSize: 24, color: Color(0xFF000000)))
+                          ]),
+                      ),
                 onPressed: () async {
                   Picker(
                       adapter: DateTimePickerAdapter(
@@ -124,13 +155,17 @@ class EditPage extends ConsumerWidget {
           Container(
             height: MediaQuery.of(context).size.height * 0.1,
             width: MediaQuery.of(context).size.width * 0.6,
+            margin: EdgeInsets.only(bottom: 48),
             color: Color(0xFFF4F4F4),
-            child: Wrap(
-              alignment: WrapAlignment.center,
+            child: Row(
               children: [
-                Icon(Icons.place),
-                Text('場所'),
-                Text(scheduledDestination)
+                Container(child: Row(children: [
+                  Icon(Icons.place),
+                  Text('場所'),
+                  ]),
+                ),
+                SizedBox(width: 20),
+                Flexible(child: Text(scheduledDestination))
               ]),
           ),
           Divider(
@@ -147,7 +182,7 @@ class EditPage extends ConsumerWidget {
               children: [
                 Text('アラーム音'),
                 TextButton(
-                  child: Text(musics[selectedMusic] + ' >'),
+                  child: Text(musics[selectedMusic] + ' >', style: TextStyle(color: Color(0xFFFF9900)),),
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
@@ -158,7 +193,7 @@ class EditPage extends ConsumerWidget {
                               RadioListTile(
                                 value: 1,
                                 groupValue: selectedMusic,
-                                title: Text('Hello World!'),
+                                title: Text(musics[1]),
                                 onChanged: (int? value) {
                                   ref.read(selectedMusicProvider.notifier).update((state) {
                                     state = value!;
@@ -169,7 +204,7 @@ class EditPage extends ConsumerWidget {
                               RadioListTile(
                                 value: 2,
                                 groupValue: selectedMusic,
-                                title: Text('ウタカタララバイ'),
+                                title: Text(musics[2]),
                                 onChanged: (int? value) {
                                   ref.read(selectedMusicProvider.notifier).update((state) {
                                     state = value!;
@@ -180,7 +215,7 @@ class EditPage extends ConsumerWidget {
                               RadioListTile(
                                 value: 3,
                                 groupValue: selectedMusic,
-                                title: Text('オドループ'),
+                                title: Text(musics[3]),
                                 onChanged: (int? value) {
                                   ref.read(selectedMusicProvider.notifier).update((state) {
                                     state = value!;
@@ -191,7 +226,7 @@ class EditPage extends ConsumerWidget {
                               RadioListTile(
                                 value: 4,
                                 groupValue: selectedMusic,
-                                title: Text('天国と地獄'),
+                                title: Text(musics[4]),
                                 onChanged: (int? value) {
                                   ref.read(selectedMusicProvider.notifier).update((state) {
                                     state = value!;
@@ -223,6 +258,7 @@ class EditPage extends ConsumerWidget {
               children: [
                 Text('スヌーズ'),
                 CupertinoSwitch(
+                  activeColor: Color(0xFFFF9900),
                   value: isSnoozeOn,
                   onChanged: (value) {
                     ref.read(isSnoozeOnProvider.notifier).update((state) {
