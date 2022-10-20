@@ -12,13 +12,83 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   List<Map> PlaceList = [];
   var NewPlaceName = '';
-  var NewPlaceTime = 0;
+  DateTime NewPlaceTime = DateTime(0, 0, 0, 0, 0);
   var pushnotification = true;
   var prepar_hour = 0;
   var prepar_minutes = 0;
   var move_hour = 0;
   var move_minutes = 0;
   DateTime notifyDateTime = DateTime(0, 0, 0, 0, 0);
+
+  void _showBottom() async {
+    var value = await showModalBottomSheet<_SettingPageState>(
+        context: context,
+        builder: (BuildContext context) {
+          return new Container(
+            padding: new EdgeInsets.all(30.0),
+            child: new Column(
+              children: <Widget>[
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      child: TextFormField(
+                        onChanged: (String value) {
+                          setState(() {
+                            NewPlaceName = value;
+                          });
+                        },
+                      ),
+                    ),
+                    Column(children: [
+                      InkWell(
+                          child: Text('a'),
+                          onTap: () async {
+                            Picker(
+                              adapter: DateTimePickerAdapter(
+                                  type: PickerDateTimeType.kHM,
+                                  value: DateTime(
+                                      0, 0, 0, prepar_hour, prepar_minutes)),
+                              title: Text('移動時間を編集'),
+                              onConfirm: (Picker picker, List value) {
+                                setState(() => {
+                                      prepar_hour = value[0],
+                                      prepar_minutes = value[1]
+                                    });
+                              },
+                            ).showModal(context);
+                          })
+                    ]),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        // ボタンが押されたときに発動される処理
+                        Navigator.pop(context);
+                      },
+                      child: Text('キャンセル',
+                          style: TextStyle(
+                              color: Color(0xffff9900), fontSize: 12)),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // ボタンが押されたときに発動される処理
+                        Navigator.pop(context);
+                      },
+                      child: Text('追加',
+                          style: TextStyle(
+                              color: Color(0xffff9900), fontSize: 12)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,40 +118,50 @@ class _SettingPageState extends State<SettingPage> {
             backgroundColor: Colors.transparent,
             automaticallyImplyLeading: false,
             centerTitle: true,
-            leading: OverflowBox(
-              maxWidth: 75,
-              child: TextButton(
-                onPressed: () {
-                  // ボタンが押されたときに発動される処理
-                  Navigator.pop(context);
-                },
-                child: Text('< 戻る',
-                    style: TextStyle(color: Color(0xffff9900), fontSize: 16)),
+            leading: Container(
+              padding: EdgeInsets.only(top: 30),
+              child: OverflowBox(
+                maxWidth: 75,
+                child: TextButton(
+                  onPressed: () {
+                    // ボタンが押されたときに発動される処理
+                    Navigator.pop(context);
+                  },
+                  child: Text('< 戻る',
+                      style: TextStyle(color: Color(0xffff9900), fontSize: 16)),
+                ),
               ),
             ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.settings, color: Colors.grey),
-                Text('設定', style: TextStyle(color: Colors.black, fontSize: 24))
-              ],
+            title: Container(
+              padding: EdgeInsets.only(top: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.settings, color: Colors.grey),
+                  Text('設定',
+                      style: TextStyle(color: Colors.black, fontSize: 24))
+                ],
+              ),
             ),
             actions: [
-              TextButton(
-                onPressed: () {
-                  // ボタンが押されたときに発動される処理
-                  Navigator.pop(context);
-                },
-                child: Text('確定',
-                    style: TextStyle(
-                        color: Color(0xffff9900),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold)),
-              ),
+              Container(
+                padding: EdgeInsets.only(top: 30),
+                child: TextButton(
+                  onPressed: () {
+                    // ボタンが押されたときに発動される処理
+                    Navigator.pop(context);
+                  },
+                  child: Text('確定',
+                      style: TextStyle(
+                          color: Color(0xffff9900),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold)),
+                ),
+              )
             ],
           ),
           body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
               child: Column(
                 children: [
                   Container(
@@ -327,26 +407,7 @@ class _SettingPageState extends State<SettingPage> {
                           ),
                           label: const Text('追加'),
                           onPressed: () {
-                            if (/* NewPlaceName != "" && NewPlaceTime != "" */ true) {
-                              try {
-                                setState(() {
-                                  // メンバーの追加
-                                  PlaceList.add({
-                                    'name': NewPlaceName, // 名前
-                                  });
-                                  // 新しいメンバーの値を初期化
-                                  NewPlaceName = "";
-                                });
-                                // テキストフィールドの入力を削除
-                                //_memberNameController.clear();
-                                //_memberPaymentController.clear();
-                              } catch (e) {
-                                setState(() {
-                                  //例外が発生したら実行する処理
-                                  //FormExceptionText = "金額は数字で入力してください";
-                                });
-                              }
-                            }
+                            _showBottom();
                           },
                         ),
                       ],
