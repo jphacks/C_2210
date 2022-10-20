@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: Container(
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                    margin: EdgeInsets.only(top: 50),
+                    margin: EdgeInsets.only(top: 100),
                     width: 275,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
