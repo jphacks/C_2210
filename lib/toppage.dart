@@ -62,10 +62,23 @@ class TopPage extends ConsumerWidget {
         drawer: Drawer(
             child: ListView(
           children: [
-            DrawerHeader(child: Text('alarm')),
+            DrawerHeader(
+                child: Text('alarm',
+                    style: TextStyle(fontSize: 28, color: Colors.grey[700]))),
             ListTile(
-              leading: TextButton(
-                child: Text('設定画面'),
+              leading: TextButton.icon(
+                icon: Icon(Icons.calendar_view_week_outlined,
+                    color: Colors.grey[700]),
+                label: Text('１週間のアラーム',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[700])),
+                onPressed: () {},
+              ),
+            ),
+            ListTile(
+              leading: TextButton.icon(
+                icon: Icon(Icons.settings_outlined, color: Colors.grey[700]),
+                label: Text('設定',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[700])),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SettingPage()));
@@ -73,8 +86,10 @@ class TopPage extends ConsumerWidget {
               ),
             ),
             ListTile(
-              leading: TextButton(
-                child: Text('ログアウト'),
+              leading: TextButton.icon(
+                icon: Icon(Icons.logout_outlined, color: Colors.grey[700]),
+                label: Text('ログアウト',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[700])),
                 onPressed: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => LoginPage()));
