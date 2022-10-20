@@ -22,6 +22,8 @@ class EditPage extends ConsumerWidget {
     final DateTime preparationDateTime = DateTime(0, 0, 0, 0, preparationTime);
     final DateTime travelDateTime = DateTime(0, 0, 0, 0, travelTime);
 
+    List<String> musics = ['未選択', 'Hello World!', 'ウタカタララバイ', 'オドループ', '天国と地獄'];
+
     // DateTime型を変換
     String getTime(dateTime) {
       return DateFormat.Hm().format(dateTime).toString();
@@ -145,7 +147,7 @@ class EditPage extends ConsumerWidget {
               children: [
                 Text('アラーム音'),
                 TextButton(
-                  child: Text(selectedMusic.toString() + ' >'),
+                  child: Text(musics[selectedMusic] + ' >'),
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
@@ -242,9 +244,4 @@ class EditPage extends ConsumerWidget {
       ),
     ));
   }
-}
-
-class MusicNotifier extends StateNotifier<List<Music>> {
-  MusicNotifier(): super([]);
-
 }
