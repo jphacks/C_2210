@@ -14,6 +14,8 @@ import 'setting.dart';
 class TopPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isAlarmOn = ref.watch(isAlarmOnProvider);
+
     // 予定もproviderで管理できるようにする
     Map<String, String> schedule = {
       'title': 'パーソナリティ心理学',
@@ -217,17 +219,32 @@ class TopPage extends ConsumerWidget {
                           style:
                               TextStyle(fontSize: 24, color: Colors.grey[700])),
                       Container(
-                          margin: EdgeInsets.all(30),
-                          child: OutlinedButton.icon(
-                            style: ButtonStyle(),
-                            onPressed: () {},
-                            icon: Icon(Icons.alarm_off_outlined,
-                                color: Colors.grey[500]),
-                            label: Text(
-                              'オフにする',
-                              style: TextStyle(color: Colors.grey[500]),
-                            ),
-                          )),
+                          child: (isAlarmOn = true)
+                              ? Container(
+                                  margin: EdgeInsets.all(30),
+                                  child: OutlinedButton.icon(
+                                    style: ButtonStyle(),
+                                    onPressed: () {},
+                                    icon: Icon(Icons.alarm_off_outlined,
+                                        color: Colors.grey[500]),
+                                    label: Text(
+                                      'オフにする',
+                                      style: TextStyle(color: Colors.grey[500]),
+                                    ),
+                                  ))
+                              : Container(
+                                  margin: EdgeInsets.all(30),
+                                  child: OutlinedButton.icon(
+                                    style: ButtonStyle(),
+                                    onPressed: () {},
+                                    icon: Icon(Icons.alarm_on_outlined,
+                                        color: Color(0xFFFF8F2D)),
+                                    label: Text(
+                                      'オンにする',
+                                      style:
+                                          TextStyle(color: Color(0xFFFF8F2D)),
+                                    ),
+                                  ))),
                     ],
                   ),
                 ),

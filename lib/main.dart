@@ -15,6 +15,10 @@ final travelTimeProvider = StateProvider((ref) {
   return 30;
 });
 
+final isAlarmOnProvider = StateProvider((ref) {
+  return true;
+});
+
 void main() async {
   await setup();
   runApp(ProviderScope(
