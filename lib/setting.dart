@@ -494,7 +494,7 @@ class _SettingPageState extends State<SettingPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 160,
+                          width: 120,
                           child: Text(
                             PlaceList[index - 1]['place'],
                             maxLines: 1,
@@ -530,6 +530,12 @@ class _SettingPageState extends State<SettingPage> {
                               'm',
                               style: TextStyle(color: Colors.grey[700]),
                             ),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                setState(() => {PlaceList.removeAt(index - 1)});
+                              },
+                            )
                           ],
                         ))
                       ],
