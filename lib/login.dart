@@ -44,58 +44,53 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.bold,
                         color: Colors.grey[700])),
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                ),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => TopPage()));
-                },
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                    margin: EdgeInsets.only(top: 100),
-                    width: 275,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: FractionalOffset.topLeft,
-                        end: FractionalOffset.bottomRight,
-                        colors: [
-                          Color.fromARGB(255, 255, 143, 45).withOpacity(0.7),
-                          Color.fromARGB(255, 255, 119, 0).withOpacity(0.7),
-                        ],
-                        stops: const [
-                          0.0,
-                          1.0,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage("google_logo_white.png"),
-                          height: 25.0,
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                          child: Text('Googleでログイン',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              )),
-                        )
+              Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  margin: EdgeInsets.only(top: 100),
+                  width: 275,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: FractionalOffset.topLeft,
+                      end: FractionalOffset.bottomRight,
+                      colors: [
+                        Color.fromARGB(255, 255, 143, 45).withOpacity(0.7),
+                        Color.fromARGB(255, 255, 119, 0).withOpacity(0.7),
                       ],
-                    )),
-              ),
+                      stops: const [
+                        0.0,
+                        1.0,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => TopPage()));
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage("google_logo_white.png"),
+                            height: 25.0,
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 30),
+                            child: Text('Googleでログイン',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                )),
+                          )
+                        ],
+                      ))),
               Container(
                   padding: EdgeInsets.only(top: 10),
                   width: 275,
