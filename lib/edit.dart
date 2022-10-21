@@ -22,6 +22,7 @@ class EditPage extends ConsumerWidget {
     final DateTime preparationDateTime = DateTime(0, 0, 0, 0, preparationTime);
     final DateTime travelDateTime = DateTime(0, 0, 0, 0, travelTime);
 
+    // データベースからとってくる？
     List<String> musics = ['未選択', 'Hello World!', 'ウタカタララバイ', 'オドループ', '天国と地獄'];
 
     // DateTime型を変換
@@ -42,14 +43,17 @@ class EditPage extends ConsumerWidget {
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        leadingWidth: 100,
+        leadingWidth: 120,
         leading: TextButton(
-          child: Text('キャンセル', style: TextStyle(fontSize: 16, color: Color(0xFFFF9900))),
+          child: Text('  キャンセル', style: TextStyle(fontSize: 16, color: Color(0xFFFF9900))),
           onPressed: () {Navigator.pop(context);}),
-        actions: [TextButton(
-          child: Text('保存', style: TextStyle(fontSize: 16, color: Color(0xFFFF9900))),
-          onPressed: () {Navigator.pop(context);}
-        )],
+        actions: [
+          TextButton(
+            child: Text('保存', style: TextStyle(fontSize: 16, color: Color(0xFFFF9900))),
+            onPressed: () {Navigator.pop(context);}
+          ),
+          SizedBox(width: 20,)
+        ],
       ),
         body: Center(
       child: Column(
@@ -187,55 +191,102 @@ class EditPage extends ConsumerWidget {
                     showModalBottomSheet(
                       context: context,
                       builder: (context) {
-                        return Container(
-                          child: ListView(
-                            children: [
-                              RadioListTile(
-                                value: 1,
-                                groupValue: selectedMusic,
-                                title: Text(musics[1]),
-                                onChanged: (int? value) {
-                                  ref.read(selectedMusicProvider.notifier).update((state) {
-                                    state = value!;
-                                    return state;
-                                  });
-                                },
-                              ),
-                              RadioListTile(
-                                value: 2,
-                                groupValue: selectedMusic,
-                                title: Text(musics[2]),
-                                onChanged: (int? value) {
-                                  ref.read(selectedMusicProvider.notifier).update((state) {
-                                    state = value!;
-                                    return state;
-                                  });
-                                },
-                              ),
-                              RadioListTile(
-                                value: 3,
-                                groupValue: selectedMusic,
-                                title: Text(musics[3]),
-                                onChanged: (int? value) {
-                                  ref.read(selectedMusicProvider.notifier).update((state) {
-                                    state = value!;
-                                    return state;
-                                  });
-                                },
-                              ),
-                              RadioListTile(
-                                value: 4,
-                                groupValue: selectedMusic,
-                                title: Text(musics[4]),
-                                onChanged: (int? value) {
-                                  ref.read(selectedMusicProvider.notifier).update((state) {
-                                    state = value!;
-                                    return state;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
+                        return Column(
+                          children: [
+                            AppBar(
+                              centerTitle: true,
+                              title: Text('アラーム音', style: TextStyle(fontSize: 16, color: Colors.black),),
+                              iconTheme: const IconThemeData(color: Colors.black),
+                              backgroundColor: Colors.transparent,
+                              elevation: 0.0,
+                              leadingWidth: 100,
+                              leading: TextButton(
+                                child: Text('  < 戻る', style: TextStyle(fontSize: 16, color: Color(0xFFFF9900))),
+                                onPressed: () {Navigator.pop(context);}),
+                            ),
+                            Divider(
+                              color: Color(0xFFD9D9D9),
+                              indent: 50,
+                              endIndent: 50,
+                              thickness: 2,
+                            ),
+                            RadioListTile(
+                              contentPadding: EdgeInsets.only(left: 50),
+                              activeColor: Color(0xFFFF9900),
+                              value: 1,
+                              groupValue: selectedMusic,
+                              title: Text(musics[1]),
+                              onChanged: (int? value) {
+                                ref.read(selectedMusicProvider.notifier).update((state) {
+                                  state = value!;
+                                  return state;
+                                });
+                              },
+                            ),
+                            Divider(
+                              color: Color(0xFFD9D9D9),
+                              indent: 50,
+                              endIndent: 50,
+                              thickness: 2,
+                            ),
+                            RadioListTile(
+                              contentPadding: EdgeInsets.only(left: 50),
+                              activeColor: Color(0xFFFF9900),
+                              value: 2,
+                              groupValue: selectedMusic,
+                              title: Text(musics[2]),
+                              onChanged: (int? value) {
+                                ref.read(selectedMusicProvider.notifier).update((state) {
+                                  state = value!;
+                                  return state;
+                                });
+                              },
+                            ),
+                            Divider(
+                              color: Color(0xFFD9D9D9),
+                              indent: 50,
+                              endIndent: 50,
+                              thickness: 2,
+                            ),
+                            RadioListTile(
+                              contentPadding: EdgeInsets.only(left: 50),
+                              activeColor: Color(0xFFFF9900),
+                              value: 3,
+                              groupValue: selectedMusic,
+                              title: Text(musics[3]),
+                              onChanged: (int? value) {
+                                ref.read(selectedMusicProvider.notifier).update((state) {
+                                  state = value!;
+                                  return state;
+                                });
+                              },
+                            ),
+                            Divider(
+                              color: Color(0xFFD9D9D9),
+                              indent: 50,
+                              endIndent: 50,
+                              thickness: 2,
+                            ),
+                            RadioListTile(
+                              contentPadding: EdgeInsets.only(left: 50),
+                              activeColor: Color(0xFFFF9900),
+                              value: 4,
+                              groupValue: selectedMusic,
+                              title: Text(musics[4]),
+                              onChanged: (int? value) {
+                                ref.read(selectedMusicProvider.notifier).update((state) {
+                                  state = value!;
+                                  return state;
+                                });
+                              },
+                            ),
+                            Divider(
+                              color: Color(0xFFD9D9D9),
+                              indent: 50,
+                              endIndent: 50,
+                              thickness: 2,
+                            ),
+                          ],
                         );
                       }
                     );

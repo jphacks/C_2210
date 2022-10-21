@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'toppage.dart';
 import 'login.dart';
 import 'notify.dart';
+import 'package:http/http.dart' as http;
 
 final preparationTimeProvider = StateProvider((ref) {
   return 90;
