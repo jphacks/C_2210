@@ -7,6 +7,9 @@ import 'toppage.dart';
 import 'login.dart';
 import 'notify.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 final preparationTimeProvider = StateProvider((ref) {
   return 90;
 });
@@ -16,6 +19,11 @@ final travelTimeProvider = StateProvider((ref) {
 });
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   await setup();
   runApp(ProviderScope(
     child: MaterialApp(

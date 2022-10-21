@@ -1,8 +1,10 @@
 import 'package:googleapis/calendar/v3.dart' as calendarO;
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:googleapis/tagmanager/v2.dart';
 import 'package:googleapis/websecurityscanner/v1.dart';
 import 'loginF.dart';
+import 'package:http/http.dart' as http;
 
 class GetInfo {
   late calendarO.CalendarApi googleCalendarApiO;
@@ -23,7 +25,7 @@ class GetInfo {
     // Google認証情報を入れるプロパティ
 // 本来はAuthClient型で宣言するプロパティだが、AuthClientを明示すると、googleapis_authパッケージのインポートが必要になるので、varで宣言してインポートを回避する
 // ※googleapis_authパッケージは、extension_google_sign_in_as_googleapis_authパッケージ内でインポート済のため、本コード内でインポートしなくても動作する
-    late var httpClientO;
+    http.Client httpClientO;
     httpClientO = SignIn().httpClientO;
 
     /// Googleカレンダーからの情報取得処理
