@@ -1,4 +1,5 @@
 import 'package:app/signIn.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -41,7 +42,7 @@ class TopPage extends ConsumerWidget {
         appBar: AppBar(
           title: Text(
             wakeUpDate,
-            style: TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black),
           ),
           iconTheme: const IconThemeData(color: Color(0xFF000000)),
           backgroundColor: Colors.transparent,
@@ -49,10 +50,10 @@ class TopPage extends ConsumerWidget {
           actions: [
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                primary: Color(0xFFFF9900),
+                primary: const Color(0xFFFF9900),
               ),
-              icon: Icon(Icons.create),
-              label: Text('編集'),
+              icon: const Icon(Icons.create),
+              label: const Text('編集'),
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => EditPage()));
@@ -61,29 +62,89 @@ class TopPage extends ConsumerWidget {
           ],
         ),
         drawer: Drawer(
+            width: 240,
             child: ListView(
-          children: [
-            DrawerHeader(child: Text('alarm')),
-            ListTile(
-              leading: TextButton(
-                child: Text('設定画面'),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SettingPage()));
-                },
-              ),
-            ),
-            ListTile(
-              leading: TextButton(
-                child: Text('ログアウト'),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-              ),
-            )
-          ],
-        )),
+              children: [
+                SizedBox(
+                  height: 130,
+                  child: DrawerHeader(
+                    child: Container(
+                      alignment: Alignment.bottomLeft,
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: const Image(
+                                image: AssetImage("logo.png"),
+                                height: 30.0,
+                              )),
+                          Text('alarm',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[700],
+                              ))
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: TextButton.icon(
+                    icon: Icon(Icons.calendar_view_week_outlined,
+                        color: Colors.grey[700]),
+                    label: Text('１週間のアラーム',
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.grey[700])),
+                    onPressed: () {
+                      showDialog<void>(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              title: const Text('Thank you for using this app!',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 255, 119, 0))),
+                              content: Text('残念ながらこの機能はまだ未実装です。もう少し待っててね！',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.grey[700])),
+                            );
+                            ;
+                          });
+                    },
+                  ),
+                ),
+                ListTile(
+                  leading: TextButton.icon(
+                    icon:
+                        Icon(Icons.settings_outlined, color: Colors.grey[700]),
+                    label: Text('設定',
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.grey[700])),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettingPage()));
+                    },
+                  ),
+                ),
+                ListTile(
+                  leading: TextButton.icon(
+                    icon: Icon(Icons.logout_outlined, color: Colors.grey[700]),
+                    label: Text('ログアウト',
+                        style:
+                            TextStyle(fontSize: 16, color: Colors.grey[700])),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    },
+                  ),
+                )
+              ],
+            )),
         // メイン部分
         body: Center(
           child: Column(
@@ -93,8 +154,8 @@ class TopPage extends ConsumerWidget {
                   color: Colors.amber[100],
                   child: Column(children: [
                     Text(getTime(wakeUpDateTime),
-                        style: TextStyle(fontSize: 64)),
-                    Text('起床'),
+                        style: const TextStyle(fontSize: 64)),
+                    const Text('起床'),
                   ])),
               Text('支度 ' + getTime(preparationDateTime)),
               Text(getTime(departureTime) + ' 出発'),
@@ -105,7 +166,7 @@ class TopPage extends ConsumerWidget {
                   child: Column(
                     children: [
                       Text(getTime(scheduleTime),
-                          style: TextStyle(fontSize: 24)),
+                          style: const TextStyle(fontSize: 24)),
                       Text(schedule['title'].toString()),
                       Text(schedule['place'].toString()),
                     ],
