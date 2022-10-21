@@ -22,7 +22,7 @@ final travelTimeProvider = StateProvider((ref) {
   return 30;
 });
 
-final selectedMusicProvider  = StateProvider((ref) {
+final selectedMusicProvider = StateProvider((ref) {
   return 1;
 });
 
@@ -34,7 +34,6 @@ final scheduledDestinationProvider = StateProvider((ref) {
   return '〒464-8601 愛知県名古屋市千種区不老町';
 });
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -44,6 +43,7 @@ void main() async {
   await setup();
   runApp(ProviderScope(
     child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'timer',
       home: MyApp(),
     ),
@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Welcome to Flutter',
       home: LoginPage(),
     );

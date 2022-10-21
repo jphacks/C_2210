@@ -52,7 +52,7 @@ class _SettingPageState extends State<SettingPage> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                 ),
-                height: 162,
+                height: 182,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: <Widget>[
