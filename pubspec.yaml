@@ -45,6 +45,13 @@ dependencies:
   flutter_riverpod: ^2.0.2
   flutter_picker: ^2.0.5
 
+  google_sign_in:
+  googleapis:
+  extension_google_sign_in_as_googleapis_auth:
+  firebase_core:
+  firebase_auth:
+  flutter_secure_storage:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
