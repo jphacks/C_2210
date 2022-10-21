@@ -41,6 +41,8 @@ class _SettingPageState extends State<SettingPage> {
     var NewPlaceName = name;
     DateTime NewPlaceTime = time;
     String errorMessege = '';
+    String confirmMessege = index == -1 ? '追加' : '確定';
+
     var value = await showDialog<_SettingPageState>(
         context: context,
         builder: (BuildContext context) {
@@ -50,35 +52,42 @@ class _SettingPageState extends State<SettingPage> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                 ),
-                height: 175,
+                height: 162,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: <Widget>[
-                    Row(children: [
-                      Container(
-                          width: 125,
-                          alignment: Alignment.bottomLeft,
-                          child: Text('場所')),
-                      Text('時間'),
-                    ]),
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                        '場所',
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: NewPlaceName,
+                      onChanged: (String value) {
+                        setState(() {
+                          NewPlaceName = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        SizedBox(
-                            width: 100,
-                            child: Column(children: [
-                              TextFormField(
-                                initialValue: NewPlaceName,
-                                onChanged: (String value) {
-                                  setState(() {
-                                    NewPlaceName = value;
-                                  });
-                                },
-                              ),
-                            ])),
+                        Text('時間'),
                         InkWell(
-                            child: Text(getTime(NewPlaceTime)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(NewPlaceTime.hour.toString()),
+                                Text('h'),
+                                Text(NewPlaceTime.minute
+                                    .toString()
+                                    .padLeft(2, "0")),
+                                Text('m')
+                              ],
+                            ),
                             onTap: () async {
                               Picker(
                                 adapter: DateTimePickerAdapter(
@@ -125,7 +134,7 @@ class _SettingPageState extends State<SettingPage> {
                               Navigator.pop(context);
                             }
                           },
-                          child: Text('追加',
+                          child: Text(confirmMessege,
                               style: TextStyle(
                                   color: Color(0xffff9900),
                                   fontSize: 12,
