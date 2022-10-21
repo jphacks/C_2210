@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'toppage.dart';
-import 'loginF.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,8 +19,6 @@ class _LoginPageState extends State<LoginPage> {
             context,
             MaterialPageRoute(builder: (context) => TopPage()),
           );
-          SignIn().googleSignInMethodO();
-          SignIn().getScheduleO();
         },
       )),
     );
