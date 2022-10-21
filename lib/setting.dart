@@ -16,8 +16,8 @@ class _SettingPageState extends State<SettingPage> {
     {'place': '大学', 'time': DateTime(0, 0, 0, 0, 15)}
   ];
   var pushnotification = true;
-  var prepar_hour = 0;
-  var prepar_minutes = 0;
+  var prepare_hour = 0;
+  var prepare_minutes = 0;
   var move_hour = 0;
   var move_minutes = 0;
   DateTime notifyDateTime = DateTime(0, 0, 0, 0, 0);
@@ -245,7 +245,7 @@ class _SettingPageState extends State<SettingPage> {
                                       alignment: Alignment.centerRight,
                                       width: 50,
                                       padding: EdgeInsets.only(right: 10),
-                                      child: Text(prepar_hour.toString(),
+                                      child: Text(prepare_hour.toString(),
                                           style: TextStyle(
                                             color: Color(0xffff9900),
                                             fontSize: 32,
@@ -260,7 +260,7 @@ class _SettingPageState extends State<SettingPage> {
                                       alignment: Alignment.center,
                                       width: 60,
                                       child: Text(
-                                          prepar_minutes
+                                          prepare_minutes
                                               .toString()
                                               .padLeft(2, "0"),
                                           style: TextStyle(
@@ -279,16 +279,16 @@ class _SettingPageState extends State<SettingPage> {
                                   Picker(
                                     adapter: DateTimePickerAdapter(
                                         type: PickerDateTimeType.kHM,
-                                        value: DateTime(0, 0, 0, prepar_hour,
-                                            prepar_minutes)),
+                                        value: DateTime(0, 0, 0, prepare_hour,
+                                            prepare_minutes)),
                                     title: Text(
                                       '移動時間を編集',
                                       style: TextStyle(color: Colors.grey[700]),
                                     ),
                                     onConfirm: (Picker picker, List value) {
                                       setState(() => {
-                                            prepar_hour = value[0],
-                                            prepar_minutes = value[1]
+                                            prepare_hour = value[0],
+                                            prepare_minutes = value[1]
                                           });
                                     },
                                   ).showModal(context);
