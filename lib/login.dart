@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'toppage.dart';
+import 'signin.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -50,8 +51,15 @@ class _LoginPageState extends State<LoginPage> {
                   shadowColor: Colors.transparent,
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => TopPage()));
+                  //googleSignInMethodOを非同期で定義してしまったので、順序調整をしている
+                  Future<void> orderAdjustment() async {
+                    if (await SignIn().googleSignInMethodO()) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => TopPage()));
+                    }
+                  }
+
+                  orderAdjustment();
                 },
                 child: Container(
                     padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
