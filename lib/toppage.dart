@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'package:app/signIn.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +10,7 @@ import 'main.dart';
 import 'edit.dart';
 import 'login.dart';
 import 'setting.dart';
+import 'signin.dart' as googleSignInO;
 
 class TopPage extends ConsumerWidget {
   @override
@@ -181,6 +182,7 @@ class TopPage extends ConsumerWidget {
                         style:
                             TextStyle(fontSize: 16, color: Colors.grey[700])),
                     onPressed: () {
+                      googleSignInO.SignIn().signOutFromGoogleO();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => LoginPage()));
                     },
@@ -219,7 +221,7 @@ class TopPage extends ConsumerWidget {
                           style:
                               TextStyle(fontSize: 24, color: Colors.grey[700])),
                       Container(
-                          child: (isAlarmOn = true)
+                          child: (isAlarmOn == true)
                               ? Container(
                                   margin: EdgeInsets.all(30),
                                   child: OutlinedButton.icon(
