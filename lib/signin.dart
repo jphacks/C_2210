@@ -233,6 +233,238 @@ class SignIn {
     }
   }
 
+  Future<List<String>?> getStartTime() async {
+    List<String> eventsStartTime = [];
+
+    /// Google SignInの処理
+// サインインせずに実行した場合に備え、ここでもサインイン処理をする
+    final signInResultO = await googleSignInMethodO();
+    if (!signInResultO) {
+// サインインできなかった場合は、早期リターン
+      return null;
+    }
+
+    /// Googleカレンダーからの情報取得処理
+// 起動後最初にこのボタンを実行した場合に備え、ここでも
+// Googleサインインで認証済のHTTPクライアントのインスタンスを作成
+    try {
+      httpClientO = (await googleSignInO.authenticatedClient())!;
+    } catch (eO) {
+      print("権限付与エラー $eO");
+// エラーの場合は、同意画面に再度チェックさせるため、一度完全サインアウトする
+      await signOutFromGoogleO();
+      return null;
+    }
+    // var hoge = AccessCredentials ();
+    //final storage = FlutterSecureStorage();
+
+    //hoge.credentials.accessToken =
+    //   storage.read(key: 'GOOGLE_CALENDAR_ACCESSTOKEN');
+// Google Calendar APIのインスタンスを作成
+    googleCalendarApiO = calendarO.CalendarApi(httpClientO);
+// 予定情報を取得したいカレンダーのIDを指定
+// 本サンプルコードでは、「primary」カレンダーとする
+    //String calendarIdO = "primary";
+    String calendarIdO = "primary";
+    List<String> calendarIdList = [];
+    int count = 0;
+    List<calendarO.CalendarListEntry>? calendarListEntryO;
+    try {
+      calendarO.CalendarList calendarListO =
+          await googleCalendarApiO.calendarList.list();
+      calendarListEntryO = calendarListO.items;
+      calendarListEntryO!.forEach((elementO) {
+        print("calendarIdを表示 ${elementO.id}");
+        calendarIdList.add(elementO.id.toString());
+        //print(elementO.id.nextSyncToken.toString());
+        count++;
+      });
+// iOSで同意画面にチェックせず続行した場合のエラー処理
+    } catch (eO) {
+      print("権限付与エラー $eO");
+      await signOutFromGoogleO();
+      return null;
+    }
+    //データ取得
+    for (int i = 0; i < count; i++) {
+      try {
+        await googleCalendarApiO.events
+            .list(calendarIdList[i],
+                timeMin: DateTime.now(),
+                maxResults: 9999,
+                //timeZone: "Asia/Tokyo",デフォルトはカレンダーのタイムゾーンのため指定せず
+                singleEvents: true,
+                orderBy: "startTime")
+            .then(
+// events.listメソッドの返り値（Event型）をvalueOで受ける
+          (valueO) {
+// 端末のTimeZoneで表示するため、.toLocal()をつける
+            //print(valueO.toJson());
+            print("これから");
+            for (int i = 0; i < valueO.items!.length; i++) {
+              eventsStartTime
+                  .add(valueO.items![i].start!.dateTime!.toLocal().toString());
+              //print(valueO.items![i].start!.dateTime!.toLocal().toString());
+              //print(valueO.items![i].location);
+            }
+            print(eventsStartTime);
+            return eventsStartTime;
+
+            // final storage = FlutterSecureStorage();
+            // final Future<String?> googleCalendarAccesstoken =
+            //     storage.read(key: 'GOOGLE_CALENDAR_ACCESSTOKEN');
+
+// var client = http.Client();
+// try {
+//   var response =  client.post(
+//       Uri.https('example.com', 'whatsit/create'),
+//       body: {'name': 'doodle', 'color': 'blue'});
+//   var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+//   var uri = Uri.parse(decodedResponse['uri'] as String);
+//   print(await client.get(uri));
+// } finally {
+//   client.close();
+// }
+
+            // final httpsUri = Uri.https(
+            //     'www.googleapis.com',
+            //     '/calendar/v3/calendars/${calendarIdO}/events',
+            //     {'key': 'AIzaSyAbvyniuFwheOG4n3bgxgJbwTanVZR3DPA'});
+            // var response = http.get(httpsUri, headers: {
+            //   'Authorization': 'Bearer ${googleCalendarAccesstoken}',
+            //   'Accept': 'application/json'
+            // });
+            // print("まじまじまじまじ");
+            // print(response);
+          },
+        ); //このitemの中身がない時とそもそものエラーの時とかの違いどうしよ...
+// エラーの時はデータが無いので、何もせずリターン
+      } catch (e) {
+        print("${i}個目、予定データなし $e");
+        //return;
+      }
+    }
+  }
+
+  Future<List<Map<String, String>>?> getEvents() async {
+    List<Map<String, String>> events = [];
+
+    /// Google SignInの処理
+// サインインせずに実行した場合に備え、ここでもサインイン処理をする
+    final signInResultO = await googleSignInMethodO();
+    if (!signInResultO) {
+// サインインできなかった場合は、早期リターン
+      return null;
+    }
+
+    /// Googleカレンダーからの情報取得処理
+// 起動後最初にこのボタンを実行した場合に備え、ここでも
+// Googleサインインで認証済のHTTPクライアントのインスタンスを作成
+    try {
+      httpClientO = (await googleSignInO.authenticatedClient())!;
+    } catch (eO) {
+      print("権限付与エラー $eO");
+// エラーの場合は、同意画面に再度チェックさせるため、一度完全サインアウトする
+      await signOutFromGoogleO();
+      return null;
+    }
+    // var hoge = AccessCredentials ();
+    //final storage = FlutterSecureStorage();
+
+    //hoge.credentials.accessToken =
+    //   storage.read(key: 'GOOGLE_CALENDAR_ACCESSTOKEN');
+// Google Calendar APIのインスタンスを作成
+    googleCalendarApiO = calendarO.CalendarApi(httpClientO);
+// 予定情報を取得したいカレンダーのIDを指定
+// 本サンプルコードでは、「primary」カレンダーとする
+    //String calendarIdO = "primary";
+    String calendarIdO = "dev7618jifekd@gmail.com";
+    List<String> calendarIdList = [];
+    int count = 0;
+    List<calendarO.CalendarListEntry>? calendarListEntryO;
+    try {
+      calendarO.CalendarList calendarListO =
+          await googleCalendarApiO.calendarList.list();
+      calendarListEntryO = calendarListO.items;
+      calendarListEntryO!.forEach((elementO) {
+        print("calendarIdを表示 ${elementO.id}");
+        calendarIdList.add(elementO.id.toString());
+        //print(elementO.id.nextSyncToken.toString());
+        count++;
+      });
+// iOSで同意画面にチェックせず続行した場合のエラー処理
+    } catch (eO) {
+      print("権限付与エラー $eO");
+      await signOutFromGoogleO();
+      return null;
+    }
+    //データ取得
+    for (int i = 0; i < count; i++) {
+      try {
+        await googleCalendarApiO.events
+            .list(calendarIdList[i],
+                timeMin: DateTime.now(),
+                maxResults: 9999,
+                //timeZone: "Asia/Tokyo",デフォルトはカレンダーのタイムゾーンのため指定せず
+                singleEvents: true,
+                orderBy: "startTime")
+            .then(
+// events.listメソッドの返り値（Event型）をvalueOで受ける
+          (valueO) {
+// 端末のTimeZoneで表示するため、.toLocal()をつける
+            print(valueO.toJson());
+            print("これから");
+            for (int i = 0; i < valueO.items!.length; i++) {
+              Map<String, String> event = {
+                'startTime':
+                    valueO.items![i].start!.dateTime!.toLocal().toString(),
+                'location': valueO.items![i].location.toString(),
+                'colorId': valueO.items![i].colorId.toString(),
+                'summary': valueO.items![i].summary.toString(),
+              };
+              events.add(event);
+              //print(valueO.items![i].start!.dateTime!.toLocal().toString());
+              //print(valueO.items![i].location);
+            }
+            print(events);
+            return events;
+
+            // final storage = FlutterSecureStorage();
+            // final Future<String?> googleCalendarAccesstoken =
+            //     storage.read(key: 'GOOGLE_CALENDAR_ACCESSTOKEN');
+
+// var client = http.Client();
+// try {
+//   var response =  client.post(
+//       Uri.https('example.com', 'whatsit/create'),
+//       body: {'name': 'doodle', 'color': 'blue'});
+//   var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+//   var uri = Uri.parse(decodedResponse['uri'] as String);
+//   print(await client.get(uri));
+// } finally {
+//   client.close();
+// }
+
+            // final httpsUri = Uri.https(
+            //     'www.googleapis.com',
+            //     '/calendar/v3/calendars/${calendarIdO}/events',
+            //     {'key': 'AIzaSyAbvyniuFwheOG4n3bgxgJbwTanVZR3DPA'});
+            // var response = http.get(httpsUri, headers: {
+            //   'Authorization': 'Bearer ${googleCalendarAccesstoken}',
+            //   'Accept': 'application/json'
+            // });
+            // print("まじまじまじまじ");
+            // print(response);
+          },
+        ); //このitemの中身がない時とそもそものエラーの時とかの違いどうしよ...
+// エラーの時はデータが無いので、何もせずリターン
+      } catch (e) {
+        print("${i}個目、予定データなし $e");
+        //return;
+      }
+    }
+  }
+
   /// サインアウト処理
   Future<void> signOutFromGoogleO() async {
 // サインインせずこのボタンを押した場合を想定し、
