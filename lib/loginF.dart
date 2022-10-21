@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 // の名前の末尾には、大文字のオー「O」をつけています
 // ※ライブラリ（パッケージ）で予め決められているもの（名前の変更不可のもの）と、
 //  自分で作成したもの（名前の変更可のもの）の区別をしやすくするため
-import 'package:flutter/material.dart';
+
 import 'package:google_sign_in/google_sign_in.dart' as signInO;
 import 'package:googleapis/calendar/v3.dart' as calendarO;
 import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sign_in_as_googleapis_auth.dart';
@@ -14,9 +14,11 @@ import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'firebase_options.dart';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'package:googleapis_auth/auth_browser.dart';
+import 'package:googleapis_auth/auth_io.dart';
 
 // class SignIn extends StatefulWidget {
 //   @override
@@ -40,7 +42,7 @@ class SignIn {
 // Google SignInの状態を示す文字列 ※起動時は空文字
   String signInStatusO = "";
 
-  /// Google SignIn処理をするメソッド
+  /// Google SignIn処理
   Future<bool> googleSignInMethodO() async {
     //リフレッシュトークンのやつが実装できればこれを有効にしてもいいかも
     // final storage = FlutterSecureStorage();
@@ -58,8 +60,10 @@ class SignIn {
 // サインイン画面や同意画面のポップアップをキャンセルした場合のエラーを回避するため、try catchを設定
 // 但し、デバッグモードでは止まってしまうので、キャンセル時の挙動を確かめるには、Runモードで実行する必要あり
     try {
+      print("hgoe");
 // isSignedInメソッドでサインイン済か否か確認
       final checkSignInResultO = await googleSignInO.isSignedIn();
+      print("hfhfhhf");
       print("サインインしているか否か $checkSignInResultO");
 // サインイン済の場合は、サインインのポップアップを出さずにサインイン処理する
 // ※iOSの場合はsignInSilentlyにしないと、毎回サインインのポップアップが出てしまうため
@@ -120,7 +124,7 @@ class SignIn {
     }
   }
 
-  /// ステップ② 予定情報の取得
+  ///予定情報の取得
   Future<void> getScheduleO() async {
     /// Google SignInの処理
 // サインインせずに実行した場合に備え、ここでもサインイン処理をする
@@ -193,9 +197,9 @@ class SignIn {
               print(valueO.items![i].location);
             }
 
-            final storage = FlutterSecureStorage();
-            final Future<String?> googleCalendarAccesstoken =
-                storage.read(key: 'GOOGLE_CALENDAR_ACCESSTOKEN');
+            // final storage = FlutterSecureStorage();
+            // final Future<String?> googleCalendarAccesstoken =
+            //     storage.read(key: 'GOOGLE_CALENDAR_ACCESSTOKEN');
 
 // var client = http.Client();
 // try {
@@ -209,16 +213,16 @@ class SignIn {
 //   client.close();
 // }
 
-            final httpsUri = Uri.https(
-                'www.googleapis.com',
-                '/calendar/v3/calendars/${calendarIdO}/events',
-                {'key': 'AIzaSyAbvyniuFwheOG4n3bgxgJbwTanVZR3DPA'});
-            var response = http.get(httpsUri, headers: {
-              'Authorization': 'Bearer ${googleCalendarAccesstoken}',
-              'Accept': 'application/json'
-            });
-            print("まじまじまじまじ");
-            print(response);
+            // final httpsUri = Uri.https(
+            //     'www.googleapis.com',
+            //     '/calendar/v3/calendars/${calendarIdO}/events',
+            //     {'key': 'AIzaSyAbvyniuFwheOG4n3bgxgJbwTanVZR3DPA'});
+            // var response = http.get(httpsUri, headers: {
+            //   'Authorization': 'Bearer ${googleCalendarAccesstoken}',
+            //   'Accept': 'application/json'
+            // });
+            // print("まじまじまじまじ");
+            // print(response);
           },
         ); //このitemの中身がない時とそもそものエラーの時とかの違いどうしよ...
 // エラーの時はデータが無いので、何もせずリターン
@@ -229,7 +233,7 @@ class SignIn {
     }
   }
 
-  /// ステップ⑤ サインアウト処理
+  /// サインアウト処理
   Future<void> signOutFromGoogleO() async {
 // サインインせずこのボタンを押した場合を想定し、
 // ここでもGoogle SignIn認証のためのインスタンスを作成する
