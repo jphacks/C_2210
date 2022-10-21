@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'toppage.dart';
 import 'login.dart';
 import 'notify.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 final preparationTimeProvider = StateProvider((ref) {
   return 90;
@@ -31,6 +36,11 @@ final scheduledDestinationProvider = StateProvider((ref) {
 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   await setup();
   runApp(ProviderScope(
     child: MaterialApp(
@@ -46,6 +56,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Welcome to Flutter', home: LoginPage());
+    return MaterialApp(
+      title: 'Welcome to Flutter',
+      home: LoginPage(),
+    );
   }
 }
