@@ -57,7 +57,10 @@ class TopPage extends ConsumerWidget {
               label: const Text('編集'),
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EditPage()));
+                    MaterialPageRoute(
+                      builder: (context) => EditPage(),
+                      fullscreenDialog: true,
+                    ));
               },
             ),
           ],
