@@ -3,7 +3,7 @@ import 'package:extension_google_sign_in_as_googleapis_auth/extension_google_sig
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:googleapis/tagmanager/v2.dart';
 import 'package:googleapis/websecurityscanner/v1.dart';
-import 'loginF.dart';
+import 'signin.dart';
 import 'package:http/http.dart' as http;
 
 class GetInfo {
