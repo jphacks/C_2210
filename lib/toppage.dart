@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,29 +39,68 @@ class TopPage extends ConsumerWidget {
     }
 
     return Scaffold(
-        // header部分
-        // Todo: 背景を透過させる
-        appBar: AppBar(
-          title: Text(
-            wakeUpDate,
-            style: const TextStyle(color: Colors.black),
-          ),
-          iconTheme: const IconThemeData(color: Color(0xFF000000)),
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          actions: [
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                primary: const Color(0xFFFF9900),
-              ),
-              icon: const Icon(Icons.create),
-              label: const Text('編集'),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => EditPage()));
-              },
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: AppBar(
+            //systemOverlayStyle、Chromeでどう表示されてるのかわからない。隠されてる？
+            systemOverlayStyle:
+                SystemUiOverlayStyle(statusBarColor: Colors.lightBlue),
+            backgroundColor: Color.fromARGB(255, 255, 255, 255),
+            shadowColor: Colors.transparent,
+            iconTheme: IconThemeData(color: Colors.grey[700], size: 30),
+            title: Text(
+              wakeUpDate,
+              style: TextStyle(color: Colors.grey[700]),
             ),
-          ],
+            actions: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditPage()));
+                },
+                child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: FractionalOffset.topLeft,
+                        end: FractionalOffset.bottomRight,
+                        colors: [
+                          Color(0xFFFF8F2D),
+                          Color(0xFFFF7700),
+                        ],
+                        stops: const [
+                          0.0,
+                          1.0,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(Icons.create, size: 20),
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text('編集',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                              )),
+                        )
+                      ],
+                    )),
+              )
+            ],
+          ),
         ),
         drawer: Drawer(
             width: 240,
@@ -144,33 +186,220 @@ class TopPage extends ConsumerWidget {
                 )
               ],
             )),
-        // メイン部分
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                  color: Colors.amber[100],
-                  child: Column(children: [
-                    Text(getTime(wakeUpDateTime),
-                        style: const TextStyle(fontSize: 64)),
-                    const Text('起床'),
-                  ])),
-              Text('支度 ' + getTime(preparationDateTime)),
-              Text(getTime(departureTime) + ' 出発'),
-              Text('移動 ' + getTime(travelDateTime)),
-              // google chalenderから取ってきた予定を表示。ListTile使ったほうがいいかも
-              Container(
-                  color: Colors.green,
+        body: SingleChildScrollView(
+          child: Container(
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: FractionalOffset.topCenter,
+                      end: FractionalOffset.bottomCenter,
+                      colors: [
+                        Color(0xFFFFFFFF),
+                        Color(0xFFFFE5AA),
+                      ],
+                    ),
+                  ),
                   child: Column(
                     children: [
-                      Text(getTime(scheduleTime),
-                          style: const TextStyle(fontSize: 24)),
-                      Text(schedule['title'].toString()),
-                      Text(schedule['place'].toString()),
+                      Container(
+                        margin: EdgeInsets.only(top: 50, bottom: 20),
+                        child: Text(getTime(wakeUpDateTime),
+                            style: TextStyle(
+                                fontSize: 100,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey[700])),
+                      ),
+                      Text('起床',
+                          style:
+                              TextStyle(fontSize: 24, color: Colors.grey[700])),
+                      Container(
+                          margin: EdgeInsets.all(30),
+                          child: OutlinedButton.icon(
+                            style: ButtonStyle(),
+                            onPressed: () {},
+                            icon: Icon(Icons.alarm_off_outlined,
+                                color: Colors.grey[500]),
+                            label: Text(
+                              'オフにする',
+                              style: TextStyle(color: Colors.grey[500]),
+                            ),
+                          )),
                     ],
-                  )),
-            ],
+                  ),
+                ),
+                Container(
+                  width: 290,
+                  margin: EdgeInsets.only(top: 20),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        '支度:',
+                        style: TextStyle(color: Colors.grey[700], fontSize: 20),
+                      ),
+                      Text(getTime(preparationDateTime),
+                          style:
+                              TextStyle(color: Colors.grey[700], fontSize: 20))
+                    ],
+                  ),
+                ),
+                Container(
+                    width: 290,
+                    margin: EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.only(
+                        top: 15, bottom: 15, left: 20, right: 40),
+                    decoration: BoxDecoration(
+                        color: Color(0xFFFFE5AA),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: (Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          getTime(departureTime),
+                          style:
+                              TextStyle(color: Colors.grey[700], fontSize: 28),
+                        ),
+                        Text('出発',
+                            style: TextStyle(
+                                color: Colors.grey[700], fontSize: 20))
+                      ],
+                    ))),
+                Container(
+                  width: 290,
+                  margin: EdgeInsets.only(top: 20),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        '移動:',
+                        style: TextStyle(color: Colors.grey[700], fontSize: 20),
+                      ),
+                      Text(getTime(travelDateTime),
+                          style:
+                              TextStyle(color: Colors.grey[700], fontSize: 20))
+                    ],
+                  ),
+                ),
+                Container(
+                    width: 290,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFF007304),
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getTime(scheduleTime),
+                          style: TextStyle(color: Colors.white, fontSize: 28),
+                        ),
+                        Text(
+                          schedule['title'].toString(),
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.place_outlined,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            Text(
+                              schedule['place'].toString(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ],
+                        )
+                      ],
+                    )),
+                Container(
+                    width: 290,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFF007304),
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getTime(scheduleTime),
+                          style: TextStyle(color: Colors.white, fontSize: 28),
+                        ),
+                        Text(
+                          schedule['title'].toString(),
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.place_outlined,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            Text(
+                              schedule['place'].toString(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ],
+                        )
+                      ],
+                    )),
+                Container(
+                    width: 290,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color(0xFF007304),
+                    ),
+                    margin: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                    padding: EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getTime(scheduleTime),
+                          style: TextStyle(color: Colors.white, fontSize: 28),
+                        ),
+                        Text(
+                          schedule['title'].toString(),
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.place_outlined,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            Text(
+                              schedule['place'].toString(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                          ],
+                        )
+                      ],
+                    )),
+                Container(
+                  height: 40,
+                )
+              ],
+            ),
           ),
         ));
   }

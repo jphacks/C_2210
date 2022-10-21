@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'main.dart';
@@ -21,8 +21,8 @@ class _LoginPageState extends State<LoginPage> {
               begin: FractionalOffset.topLeft,
               end: FractionalOffset.bottomRight,
               colors: [
-                Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
-                Color.fromARGB(255, 255, 226, 169).withOpacity(0.6),
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 255, 226, 169),
               ],
               stops: const [
                 0.0,
@@ -62,8 +62,8 @@ class _LoginPageState extends State<LoginPage> {
                         begin: FractionalOffset.topLeft,
                         end: FractionalOffset.bottomRight,
                         colors: [
-                          Color.fromARGB(255, 255, 143, 45).withOpacity(0.7),
-                          Color.fromARGB(255, 255, 119, 0).withOpacity(0.7),
+                          Color.fromARGB(255, 255, 143, 45),
+                          Color.fromARGB(255, 255, 119, 0),
                         ],
                         stops: const [
                           0.0,
