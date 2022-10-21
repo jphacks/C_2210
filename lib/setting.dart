@@ -10,7 +10,11 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  List<Map> PlaceList = [];
+  List<Map> PlaceList = [
+    {'place': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'time': DateTime(0, 0, 0, 1, 25)},
+    {'place': 'バイト先', 'time': DateTime(0, 0, 0, 0, 15)},
+    {'place': '大学', 'time': DateTime(0, 0, 0, 0, 15)}
+  ];
   var NewPlaceName = '';
   DateTime NewPlaceTime = DateTime(0, 0, 0, 0, 0);
   var pushnotification = true;
@@ -25,24 +29,36 @@ class _SettingPageState extends State<SettingPage> {
         context: context,
         builder: (BuildContext context) {
           return new Container(
-            padding: new EdgeInsets.all(30.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            height: 175,
+            padding: new EdgeInsets.symmetric(vertical: 30.0, horizontal: 50),
             child: new Column(
               children: <Widget>[
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: 100,
-                      child: TextFormField(
-                        onChanged: (String value) {
-                          setState(() {
-                            NewPlaceName = value;
-                          });
-                        },
-                      ),
-                    ),
+                        width: 150,
+                        child: Column(children: [
+                          Container(
+                              alignment: Alignment.bottomLeft,
+                              child: Text('場所')),
+                          TextFormField(
+                            onChanged: (String value) {
+                              setState(() {
+                                NewPlaceName = value;
+                              });
+                            },
+                          ),
+                        ])),
                     Column(children: [
+                      Container(
+                          alignment: Alignment.topLeft, child: Text('時間')),
                       InkWell(
-                          child: Text('a'),
+                          child: Text(getTime(NewPlaceTime)),
                           onTap: () async {
                             Picker(
                               adapter: DateTimePickerAdapter(
@@ -90,20 +106,20 @@ class _SettingPageState extends State<SettingPage> {
         });
   }
 
+  String getTime(dateTime) {
+    return DateFormat.Hm().format(dateTime).toString();
+  }
+
   @override
   Widget build(BuildContext context) {
-    String getTime(dateTime) {
-      return DateFormat.Hm().format(dateTime).toString();
-    }
-
     return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: FractionalOffset.topCenter,
             end: FractionalOffset.bottomCenter,
             colors: [
-              const Color(0xffffffff),
-              const Color(0xfffff2df),
+              Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+              Color.fromARGB(255, 255, 226, 169).withOpacity(0.6),
             ],
             stops: const [
               0.0,
@@ -112,57 +128,58 @@ class _SettingPageState extends State<SettingPage> {
           ),
         ),
         child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            elevation: 0,
             backgroundColor: Colors.transparent,
-            automaticallyImplyLeading: false,
-            centerTitle: true,
-            leading: Container(
-              padding: EdgeInsets.only(top: 30),
-              child: OverflowBox(
-                maxWidth: 75,
-                child: TextButton(
-                  onPressed: () {
-                    // ボタンが押されたときに発動される処理
-                    Navigator.pop(context);
-                  },
-                  child: Text('< 戻る',
-                      style: TextStyle(color: Color(0xffff9900), fontSize: 16)),
-                ),
-              ),
-            ),
-            title: Container(
-              padding: EdgeInsets.only(top: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.settings, color: Colors.grey),
-                  Text('設定',
-                      style: TextStyle(color: Colors.black, fontSize: 24))
-                ],
-              ),
-            ),
-            actions: [
-              Container(
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              leading: Container(
                 padding: EdgeInsets.only(top: 30),
-                child: TextButton(
-                  onPressed: () {
-                    // ボタンが押されたときに発動される処理
-                    Navigator.pop(context);
-                  },
-                  child: Text('確定',
-                      style: TextStyle(
-                          color: Color(0xffff9900),
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold)),
+                child: OverflowBox(
+                  maxWidth: 75,
+                  child: TextButton(
+                    onPressed: () {
+                      // ボタンが押されたときに発動される処理
+                      Navigator.pop(context);
+                    },
+                    child: Text('< 戻る',
+                        style:
+                            TextStyle(color: Color(0xffff9900), fontSize: 16)),
+                  ),
                 ),
-              )
-            ],
-          ),
-          body: Container(
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-              child: Column(
+              ),
+              title: Container(
+                padding: EdgeInsets.only(top: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.settings, color: Colors.grey),
+                    Text('設定',
+                        style: TextStyle(color: Colors.black, fontSize: 24))
+                  ],
+                ),
+              ),
+              actions: [
+                Container(
+                  padding: EdgeInsets.only(top: 30),
+                  child: TextButton(
+                    onPressed: () {
+                      // ボタンが押されたときに発動される処理
+                      Navigator.pop(context);
+                    },
+                    child: Text('確定',
+                        style: TextStyle(
+                            color: Color(0xffff9900),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                )
+              ],
+            ),
+            body: Container(
+              padding: EdgeInsets.only(left: 50, right: 50, top: 30),
+              child: ListView(
                 children: [
                   Container(
                     padding: EdgeInsets.only(bottom: 12),
@@ -179,13 +196,13 @@ class _SettingPageState extends State<SettingPage> {
                           ),
                           child: InkWell(
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Container(
-                                    alignment: Alignment.center,
-                                    width: 40,
+                                    alignment: Alignment.centerRight,
+                                    width: 50,
+                                    padding: EdgeInsets.only(right: 10),
                                     child: Text(prepar_hour.toString(),
                                         style: TextStyle(
                                           color: Color(0xffff9900),
@@ -198,8 +215,11 @@ class _SettingPageState extends State<SettingPage> {
                                       )),
                                   Container(
                                     alignment: Alignment.center,
-                                    width: 40,
-                                    child: Text(prepar_minutes.toString(),
+                                    width: 60,
+                                    child: Text(
+                                        prepar_minutes
+                                            .toString()
+                                            .padLeft(2, "0"),
                                         style: TextStyle(
                                           color: Color(0xffff9900),
                                           fontSize: 32,
@@ -245,13 +265,13 @@ class _SettingPageState extends State<SettingPage> {
                           ),
                           child: InkWell(
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Container(
-                                    alignment: Alignment.center,
-                                    width: 40,
+                                    alignment: Alignment.centerRight,
+                                    width: 50,
+                                    padding: EdgeInsets.only(right: 10),
                                     child: Text(move_hour.toString(),
                                         style: TextStyle(
                                           color: Color(0xffff9900),
@@ -264,8 +284,9 @@ class _SettingPageState extends State<SettingPage> {
                                       )),
                                   Container(
                                     alignment: Alignment.center,
-                                    width: 40,
-                                    child: Text(move_minutes.toString(),
+                                    width: 60,
+                                    child: Text(
+                                        move_minutes.toString().padLeft(2, "0"),
                                         style: TextStyle(
                                           color: Color(0xffff9900),
                                           fontSize: 32,
@@ -374,7 +395,61 @@ class _SettingPageState extends State<SettingPage> {
                       ],
                     ),
                   ),
-                  Expanded(
+                  Text('よく行く場所'),
+                  for (var index = 0; index < PlaceList.length; index++)
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      margin: EdgeInsets.symmetric(vertical: 3),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 175,
+                            child: Text(
+                              PlaceList[index]['place'],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Container(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Icon(Icons.hourglass_bottom),
+                              Text(PlaceList[index]['time'].hour.toString()),
+                              Text('h'),
+                              Text(PlaceList[index]['time']
+                                  .minute
+                                  .toString()
+                                  .padLeft(2, '0')),
+                              Text('m'),
+                            ],
+                          ))
+                        ],
+                      ),
+                    ),
+                  InkWell(
+                    child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                        margin: EdgeInsets.symmetric(vertical: 3),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text('+追加')),
+                    onTap: () {
+                      _showBottom();
+                    },
+                  )
+                  /* Expanded(
                     child: Column(
                       children: [
                         Text('よく行く場所'),
@@ -384,37 +459,67 @@ class _SettingPageState extends State<SettingPage> {
                             itemBuilder: (context, index) {
                               return Container(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                margin: EdgeInsets.symmetric(vertical: 1),
+                                    horizontal: 15, vertical: 5),
+                                margin: EdgeInsets.symmetric(vertical: 3),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text("大学"),
-                                    Text('a'),
+                                    Container(
+                                      width: 175,
+                                      child: Text(
+                                        PlaceList[index]['place'],
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    Container(
+                                        child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(Icons.hourglass_bottom),
+                                        Text(PlaceList[index]['time']
+                                            .hour
+                                            .toString()),
+                                        Text('h'),
+                                        Text(PlaceList[index]['time']
+                                            .minute
+                                            .toString()
+                                            .padLeft(2, '0')),
+                                        Text('m'),
+                                      ],
+                                    ))
                                   ],
                                 ),
                               );
                             },
                           ),
                         ),
-                        ElevatedButton.icon(
-                          icon: const Icon(
-                            Icons.add,
-                            color: Colors.white,
-                          ),
-                          label: const Text('追加'),
-                          onPressed: () {
+                        InkWell(
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 5),
+                              margin: EdgeInsets.symmetric(vertical: 3),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text('+追加')),
+                          onTap: () {
                             _showBottom();
                           },
-                        ),
+                        )
                       ],
                     ),
-                  )
+                  ) */
                 ],
-              )),
-        ));
+              ),
+            )));
   }
 }
