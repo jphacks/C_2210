@@ -8,6 +8,7 @@ import 'main.dart';
 import 'edit.dart';
 import 'login.dart';
 import 'setting.dart';
+import 'signin.dart' as googleSignInO;
 
 class TopPage extends ConsumerWidget {
   @override
@@ -141,6 +142,7 @@ class TopPage extends ConsumerWidget {
                         style:
                             TextStyle(fontSize: 16, color: Colors.grey[700])),
                     onPressed: () {
+                      googleSignInO.SignIn().signOutFromGoogleO();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => LoginPage()));
                     },
