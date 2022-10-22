@@ -411,25 +411,26 @@ class SignIn {
 // events.listメソッドの返り値（Event型）をvalueOで受ける
           (valueO) {
 // 端末のTimeZoneで表示するため、.toLocal()をつける
-            print(valueO.toJson());
-            print("これから");
-            for (int i = 0; i < valueO.items!.length.toInt(); i++) {
-              print("jfjfjfjf");
-              print(valueO.items![i].start!.dateTime!.toLocal().toString());
-              print(valueO.items![i].location!.toString());
-              Map<String, String?> event = {
-                'startTime':
-                    valueO.items![i].start!.dateTime!.toLocal().toString(),
-                //'location': valueO.items![i].location!.toString(),
-                //'colorId': valueO.items![i].colorId!.toString(),
-                //'summary': valueO.items![i].summary!.toString(),
-              };
-              print("eieieiei");
-              events.add(event);
+            //print(valueO.toJson());
+            print("データ取得");
+            Map<String, String?> event;
+            for (int i = 0; i < valueO.items!.length.toInt(); i += 1) {
+              //print(valueO.items![i].start!.dateTime!.toLocal().toString());
+              //print(valueO.items![i].location.toString());
+              if (valueO.items![i].start!.dateTime != null) {
+                event = {
+                  'startTime':
+                      valueO.items![i].start!.dateTime!.toLocal().toString(),
+                  'location': valueO.items![i].location.toString(),
+                  'colorId': valueO.items![i].colorId.toString(),
+                  'summary': valueO.items![i].summary.toString(),
+                };
+                print(event);
+                events.add(event);
+              }
               //print(valueO.items![i].start!.dateTime!.toLocal().toString());
               //print(valueO.items![i].location);
             }
-            print("hoge");
             print(events);
             return events;
 
