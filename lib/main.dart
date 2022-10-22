@@ -22,6 +22,9 @@ final travelTimeProvider = StateProvider((ref) {
   return 30;
 });
 
+final isAlarmOnProvider = StateProvider((ref) {
+  return true;
+});
 final selectedMusicProvider = StateProvider((ref) {
   return 1;
 });
