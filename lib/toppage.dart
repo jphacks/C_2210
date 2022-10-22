@@ -219,7 +219,7 @@ class TopPage extends ConsumerWidget {
                           style:
                               TextStyle(fontSize: 24, color: Colors.grey[700])),
                       Container(
-                          child: (isAlarmOn = true)
+                          child: (isAlarmOn == true)
                               ? Container(
                                   margin: EdgeInsets.all(30),
                                   child: OutlinedButton.icon(
