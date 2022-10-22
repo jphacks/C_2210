@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'main.dart';
 import 'toppage.dart';
+import 'signin.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -21,8 +22,8 @@ class _LoginPageState extends State<LoginPage> {
               begin: FractionalOffset.topLeft,
               end: FractionalOffset.bottomRight,
               colors: [
-                Color.fromARGB(255, 255, 255, 255),
-                Color.fromARGB(255, 255, 226, 169),
+                Color.fromARGB(255, 255, 255, 255).withOpacity(0.6),
+                Color.fromARGB(255, 255, 226, 169).withOpacity(0.6),
               ],
               stops: const [
                 0.0,
@@ -38,64 +39,68 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(top: 30),
-                child: Text('alarm',
+                child: Text('VIBRA',
                     style: TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey[700])),
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                ),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => TopPage()));
-                },
-                child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                    margin: EdgeInsets.only(top: 100),
-                    width: 275,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: FractionalOffset.topLeft,
-                        end: FractionalOffset.bottomRight,
-                        colors: [
-                          Color.fromARGB(255, 255, 143, 45),
-                          Color.fromARGB(255, 255, 119, 0),
-                        ],
-                        stops: const [
-                          0.0,
-                          1.0,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image(
-                          image: AssetImage("google_logo_white.png"),
-                          height: 25.0,
-                        ),
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          padding:
-                              EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                          child: Text('Googleでログイン',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              )),
-                        )
+              Container(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  margin: EdgeInsets.only(top: 100),
+                  width: 275,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: FractionalOffset.topLeft,
+                      end: FractionalOffset.bottomRight,
+                      colors: [
+                        Color.fromARGB(255, 255, 143, 45).withOpacity(0.7),
+                        Color.fromARGB(255, 255, 119, 0).withOpacity(0.7),
                       ],
-                    )),
-              ),
+                      stops: const [
+                        0.0,
+                        1.0,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: InkWell(
+                      onTap: () {
+                        //googleSignInMethodOを非同期で定義してしまったので、順序調整をしている
+                        Future<void> orderAdjustment() async {
+                          if (await SignIn().googleSignInMethodO()) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TopPage()));
+                          }
+                        }
+
+                        orderAdjustment();
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image(
+                            image: AssetImage("google_logo_white.png"),
+                            height: 25.0,
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(
+                                vertical: 0, horizontal: 30),
+                            child: Text('Googleでログイン',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                )),
+                          )
+                        ],
+                      ))),
               Container(
                   padding: EdgeInsets.only(top: 10),
                   width: 275,
