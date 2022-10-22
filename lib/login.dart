@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
               Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(top: 30),
-                child: Text('alarm',
+                child: Text('VIBRA',
                     style: TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.bold,
@@ -70,9 +70,11 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: () {
                         //googleSignInMethodOを非同期で定義してしまったので、順序調整をしている
                         Future<void> orderAdjustment() async {
-                        if (await SignIn().googleSignInMethodO()) {
-                          Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => TopPage()));
+                          if (await SignIn().googleSignInMethodO()) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TopPage()));
                           }
                         }
 
