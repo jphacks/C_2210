@@ -62,6 +62,7 @@ class TopPage extends ConsumerWidget {
                   shadowColor: Colors.transparent,
                 ),
                 onPressed: () {
+                  googleSignInO.SignIn().getEvents();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => EditPage()));
                 },

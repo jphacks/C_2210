@@ -346,8 +346,8 @@ class SignIn {
     }
   }
 
-  Future<List<Map<String, String>>?> getEvents() async {
-    List<Map<String, String>> events = [];
+  Future<List<Map<String, String?>>?> getEvents() async {
+    List<Map<String, String?>> events = [];
 
     /// Google SignInの処理
 // サインインせずに実行した場合に備え、ここでもサインイン処理をする
@@ -376,9 +376,8 @@ class SignIn {
 // Google Calendar APIのインスタンスを作成
     googleCalendarApiO = calendarO.CalendarApi(httpClientO);
 // 予定情報を取得したいカレンダーのIDを指定
-// 本サンプルコードでは、「primary」カレンダーとする
-    //String calendarIdO = "primary";
-    String calendarIdO = "dev7618jifekd@gmail.com";
+
+    String calendarIdO = "primary";
     List<String> calendarIdList = [];
     int count = 0;
     List<calendarO.CalendarListEntry>? calendarListEntryO;
@@ -414,18 +413,23 @@ class SignIn {
 // 端末のTimeZoneで表示するため、.toLocal()をつける
             print(valueO.toJson());
             print("これから");
-            for (int i = 0; i < valueO.items!.length; i++) {
-              Map<String, String> event = {
+            for (int i = 0; i < valueO.items!.length.toInt(); i++) {
+              print("jfjfjfjf");
+              print(valueO.items![i].start!.dateTime!.toLocal().toString());
+              print(valueO.items![i].location!.toString());
+              Map<String, String?> event = {
                 'startTime':
                     valueO.items![i].start!.dateTime!.toLocal().toString(),
-                'location': valueO.items![i].location.toString(),
-                'colorId': valueO.items![i].colorId.toString(),
-                'summary': valueO.items![i].summary.toString(),
+                //'location': valueO.items![i].location!.toString(),
+                //'colorId': valueO.items![i].colorId!.toString(),
+                //'summary': valueO.items![i].summary!.toString(),
               };
+              print("eieieiei");
               events.add(event);
               //print(valueO.items![i].start!.dateTime!.toLocal().toString());
               //print(valueO.items![i].location);
             }
+            print("hoge");
             print(events);
             return events;
 
