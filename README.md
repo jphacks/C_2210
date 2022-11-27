@@ -2,6 +2,9 @@
 
 [![IMAGE ALT TEXT HERE](https://jphacks.com/wp-content/uploads/2022/08/JPHACKS2022_ogp.jpg)](https://www.youtube.com/watch?v=LUPQFB4QyVo)
 
+## スライド
+https://docs.google.com/presentation/d/1n5jMZ-IB3gysoUppu61JhVOrH1n2e8v51OFVB_W4-Qo/edit#slide=id.p
+
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
 
